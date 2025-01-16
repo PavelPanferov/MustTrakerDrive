@@ -18,7 +18,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Кеширование Flutter пакетов
+      # 2. Проверка структуры проекта
+      - name: Verify Project Structure
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+          echo "Checking for pubspec.yaml:"
+          find . -name "pubspec.yaml"
+
+      # 3. Кеширование Flutter пакетов
       - name: Cache Flutter packages
         uses: actions/cache@v3
         with:
@@ -29,7 +39,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
-      # 3. Кеширование Gradle
+      # 4. Кеширование Gradle
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -40,47 +50,47 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 4. Setup Java
+      # 5. Setup Java
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '11'
 
-      # 5. Setup Flutter
+      # 6. Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0' # Убедитесь, что версия соответствует вашему проекту
           channel: 'stable'
 
-      # 6. Flutter Doctor
+      # 7. Flutter Doctor
       - name: Flutter Doctor
         run: flutter doctor -v
 
-      # 7. Установка зависимостей
+      # 8. Установка зависимостей
       - name: Install Dependencies
         run: |
           flutter clean
           flutter pub get
 
-      # 8. (Опционально) Запуск анализа и тестов
+      # 9. (Опционально) Запуск анализа и тестов
       - name: Run Flutter Analyzer
         run: flutter analyze
 
       - name: Run Tests
         run: flutter test
 
-      # 9. Сборка APK
+      # 10. Сборка APK
       - name: Build APK
         run: flutter build apk --release --split-per-abi
 
-      # 10. Архивация APK-файлов (опционально)
+      # 11. Архивация APK-файлов (опционально)
       - name: Compress APKs
         run: |
           zip -r release-apks.zip build/app/outputs/flutter-apk/
 
-      # 11. Загрузка APK как артефактов
+      # 12. Загрузка APK как артефактов
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v3
         with:
