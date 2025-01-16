@@ -37,7 +37,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0'
+          flutter-version: '3.24.2'
           channel: 'stable'
 
       # 5. Сборка проекта (без перехода в подпапки, т.к. pubspec.yaml в корне)
