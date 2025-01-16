@@ -1,0 +1,98 @@
+name: Build and Upload APK
+
+on:
+  push:
+    branches: [ main, flutterflow ]
+  pull_request:
+    branches: [ main, flutterflow ]
+  workflow_dispatch: # Позволяет запускать workflow вручную
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Кеширование Flutter пакетов
+      - name: Cache Flutter packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            !~/.pub-cache/hosted/pub.dev/cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      # 3. Кеширование Gradle
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # 4. Setup Java
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      # 5. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0' # Убедитесь, что версия соответствует вашему проекту
+          channel: 'stable'
+
+      # 6. Flutter Doctor
+      - name: Flutter Doctor
+        run: flutter doctor -v
+
+      # 7. Установка зависимостей
+      - name: Install Dependencies
+        run: |
+          flutter clean
+          flutter pub get
+
+      # 8. (Опционально) Запуск анализа и тестов
+      - name: Run Flutter Analyzer
+        run: flutter analyze
+
+      - name: Run Tests
+        run: flutter test
+
+      # 9. Сборка APK
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi
+
+      # 10. Архивация APK-файлов (опционально)
+      - name: Compress APKs
+        run: |
+          zip -r release-apks.zip build/app/outputs/flutter-apk/
+
+      # 11. Загрузка APK как артефактов
+      - name: Upload APK Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apks
+          path: release-apks.zip
+
+      # Альтернативный вариант: загрузка отдельных APK-файлов
+      # - name: Upload Individual APKs
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: release-apks
+      #     path: |
+      #       build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+      #       build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+      #       build/app/outputs/flutter-apk/app-x86_64-release.apk
