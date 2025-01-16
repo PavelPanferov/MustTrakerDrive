@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           ref: flutterflow
 
-      # 2. Проверка структуры
+      # 2. Показываем файлы (для отладки)
       - name: Show files
         run: |
           echo "Root folder:"
@@ -40,23 +40,19 @@ jobs:
           flutter-version: '3.16.0'
           channel: 'stable'
 
-      # 5. Сборка (переход в папку, если pubspec.yaml НЕ в корне)
+      # 5. Сборка проекта (без перехода в подпапки, т.к. pubspec.yaml в корне)
       - name: Build APK
         run: |
-          cd ./   # Если pubspec.yaml в корне ветки flutterflow, оставьте так
-          # ИЛИ если pubspec.yaml в подпапке "flutterflow", замените на:
-          # cd flutterflow
           flutter clean
           flutter pub get
           flutter build apk --release --split-per-abi
 
-      # 6. Архив APK
-      - name: Compress APKs
+      # 6. Архивируем APK
+      - name: Archive APK
         run: |
-          cd ./  # та же папка, где .build/app/outputs
           zip -r release-apks.zip build/app/outputs/flutter-apk/
 
-      # 7. Загрузка артефактов
+      # 7. Выгружаем артефакт
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v3
         with:
