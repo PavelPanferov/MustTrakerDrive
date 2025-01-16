@@ -2,9 +2,9 @@ name: Build and Upload APK
 
 on:
   push:
-    branches: [ main, flutterflow ]
+    branches: [ flutterflow ]
   pull_request:
-    branches: [ main, flutterflow ]
+    branches: [ flutterflow ]
   workflow_dispatch:
 
 jobs:
@@ -12,11 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # 1. Явно указываем, что нужно взять ветку flutterflow
+      - name: Checkout repository (flutterflow branch)
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: flutterflow
 
+      # 2. Проверяем структуру проекта
       - name: Verify Project Structure
         run: |
           echo "Current directory:"
@@ -26,6 +29,7 @@ jobs:
           echo "Checking for pubspec.yaml:"
           find . -name "pubspec.yaml"
 
+      # 3. Кешируем Flutter-зависимости
       - name: Cache Flutter packages
         uses: actions/cache@v3
         with:
@@ -36,6 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
+      # 4. Кешируем Gradle
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -46,36 +51,43 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      # 5. Ставим Java
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '11'
 
+      # 6. Ставим Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0'
           channel: 'stable'
 
+      # 7. Проверяем Flutter
       - name: Flutter Doctor
         run: flutter doctor -v
 
+      # 8. Устанавливаем зависимости
       - name: Install Dependencies
         run: |
           flutter clean
           flutter pub get
 
-      # Удалён шаг тестов:
+      # (Опционально убран шаг тестов)
       # - name: Run Tests
       #   run: flutter test
 
+      # 9. Сборка APK
       - name: Build APK
         run: flutter build apk --release --split-per-abi
 
+      # 10. Архивация APK (опционально)
       - name: Compress APKs
         run: zip -r release-apks.zip build/app/outputs/flutter-apk/
 
+      # 11. Выгружаем APK как артефакт
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v3
         with:
