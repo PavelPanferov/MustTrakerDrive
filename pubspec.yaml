@@ -98,7 +98,6 @@ dependencies:
 
 dependency_overrides:
   uuid: ^4.0.0
-  http: 1.2.2
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1
