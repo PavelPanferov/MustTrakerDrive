@@ -29,7 +29,7 @@ Future requestIgnoreBatteryOptimizations() async {
         try {
           // Сначала проверяем, не включено ли уже игнорирование
           final isIgnoringBatteryOptimizations = await AndroidIntent(
-            action: 'android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
+            action: 'android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
             data: 'package:$packageName',
           ).canResolveActivity();
 
