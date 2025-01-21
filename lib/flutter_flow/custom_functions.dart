@@ -10,94 +10,6 @@ import 'place.dart';
 import 'uploaded_file.dart';
 import '/backend/schema/structs/index.dart';
 
-double calculateAverageSpeed(List<dynamic>? json) {
-  if (json == null || json.isEmpty) {
-    return 0; // Если данных нет, возвращаем 0
-  }
-
-  // Сортируем данные по возрастанию дат
-  json.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  // Функция для суммирования расстояний и времени
-  double totalDistance = 0.0;
-  Duration totalTime = Duration.zero;
-
-  for (int i = 0; i < json.length - 1; i++) {
-    LatLng? pointA = LatLng(json[i]['latitude'], json[i]['longitude']);
-    LatLng? pointB = LatLng(json[i + 1]['latitude'], json[i + 1]['longitude']);
-
-    totalDistance += calculateDistance(pointA, pointB)!; // Суммируем расстояние
-
-    // Вычисляем время между двумя точками
-    DateTime timeA = DateTime.parse(json[i]['timestamp']);
-    DateTime timeB = DateTime.parse(json[i + 1]['timestamp']);
-    totalTime += timeB.difference(timeA); // Суммируем время
-  }
-
-  // Проверяем, чтобы не делить на 0
-  if (totalTime.inSeconds == 0) {
-    return 0; // Если нет времени, скорость 0
-  }
-
-  // Возвращаем среднюю скорость в км/ч
-  double averageSpeed = (totalDistance / 1000) / (totalTime.inHours);
-  return averageSpeed;
-}
-
-double calculateAverageSpeedForDay(
-  List<dynamic>? json,
-  DateTime day,
-) {
-  if (json == null || json.isEmpty) {
-    return 0;
-  }
-
-  // Фильтруем данные для заданного дня
-  List<dynamic> dayData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == day.year &&
-        timestamp.month == day.month &&
-        timestamp.day == day.day;
-  }).toList();
-
-  // Сортируем данные по возрастанию дат
-  dayData.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  // Суммируем расстояния между точками в рамках одного дня
-  double totalDistance = 0.0;
-  Duration totalTime = Duration.zero;
-
-  for (int i = 0; i < dayData.length - 1; i++) {
-    LatLng? pointA = LatLng(dayData[i]['latitude'], dayData[i]['longitude']);
-    LatLng? pointB =
-        LatLng(dayData[i + 1]['latitude'], dayData[i + 1]['longitude']);
-
-    totalDistance += calculateDistance(pointA, pointB)!; // Суммируем расстояние
-
-    // Вычисляем время между двумя точками
-    DateTime timeA = DateTime.parse(dayData[i]['timestamp']);
-    DateTime timeB = DateTime.parse(dayData[i + 1]['timestamp']);
-    totalTime += timeB.difference(timeA); // Суммируем время
-  }
-
-  // Проверяем, чтобы не делить на 0
-  if (totalTime.inSeconds == 0) {
-    return 0; // Если нет времени, скорость 0
-  }
-
-  // Возвращаем среднюю скорость в км/ч
-  double averageSpeed = (totalDistance / 1000) / (totalTime.inHours);
-  return averageSpeed;
-}
-
 double calculateTotalDistance(List<dynamic>? json) {
   if (json == null || json.isEmpty) {
     return 0; // Если данных нет, возвращаем 0
@@ -138,122 +50,12 @@ double? calculateDistance(LatLng? positionOne, LatLng? positionTwo) {
   return result; // Возвращаем результат в километрах
 }
 
-DateTime? getFirstDateForDay(
-  List<dynamic>? json,
-  DateTime day,
-) {
-  if (json == null || json.isEmpty) {
-    return null; // Если данные отсутствуют, возвращаем null
-  }
-
-  // Фильтруем данные для заданного дня
-  List<dynamic> dayData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == day.year &&
-        timestamp.month == day.month &&
-        timestamp.day == day.day;
-  }).toList();
-
-  // Если нет данных за этот день, возвращаем null
-  if (dayData.isEmpty) {
-    return null;
-  }
-
-  // Находим минимальную дату
-  DateTime firstDate = dayData
-      .map((data) => DateTime.parse(data['timestamp']))
-      .reduce((a, b) => a.isBefore(b) ? a : b);
-
-  return firstDate; // Возвращаем первую дату за день
-}
-
 String hidePhone(String phone) {
   if (phone.startsWith('+7') && phone.length == 12) {
     // Формируем маскированный номер с закрытыми цифрами
     return '+7(${phone.substring(2, 5)})***-**-${phone.substring(10, 12)}';
   }
   return phone;
-}
-
-double calculateTotalDistanceForDay(
-  List<dynamic>? json,
-  DateTime day,
-) {
-  if (json == null || json.isEmpty) {
-    return 0; // Если данных нет, возвращаем 0
-  }
-
-  // Фильтруем данные для указанного дня
-  List<dynamic> dayData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == day.year &&
-        timestamp.month == day.month &&
-        timestamp.day == day.day;
-  }).toList();
-
-  // Сортируем данные по возрастанию дат
-  dayData.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  // Суммируем расстояния между точками
-  double totalDistance = 0.0;
-
-  for (int i = 0; i < dayData.length - 1; i++) {
-    LatLng? pointA = LatLng(dayData[i]['latitude'], dayData[i]['longitude']);
-    LatLng? pointB =
-        LatLng(dayData[i + 1]['latitude'], dayData[i + 1]['longitude']);
-    totalDistance += getDistanceBetweenPoints(pointA, pointB)!;
-  }
-
-  return totalDistance; // Возвращаем общее расстояние за день
-}
-
-// Функция для расчета расстояния между двумя точками
-double? getDistanceBetweenPoints(LatLng? positionOne, LatLng? positionTwo) {
-  if (positionOne == null || positionTwo == null)
-    return null; // Проверка на null
-
-  var p = 0.017453292519943295; // Конверсия градусов в радианы
-  var a = 0.5 -
-      math.cos((positionTwo!.latitude - positionOne!.latitude) * p) / 2 +
-      math.cos(positionOne.latitude * p) *
-          math.cos(positionTwo.latitude * p) *
-          (1 - math.cos((positionTwo.longitude - positionOne.longitude) * p)) /
-          2;
-  double result = 12742 * math.asin(math.sqrt(a)); // Расчет расстояния
-  return result; // Возвращаем результат в километрах
-}
-
-DateTime? getLastDateForDay(
-  List<dynamic>? json,
-  DateTime day,
-) {
-  if (json == null || json.isEmpty) {
-    return null; // Если данные отсутствуют, возвращаем null
-  }
-
-  // Фильтруем данные для заданного дня
-  List<dynamic> dayData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == day.year &&
-        timestamp.month == day.month &&
-        timestamp.day == day.day;
-  }).toList();
-
-  // Если нет данных за этот день, возвращаем null
-  if (dayData.isEmpty) {
-    return null;
-  }
-
-  // Находим максимальную дату
-  DateTime lastDate = dayData
-      .map((data) => DateTime.parse(data['timestamp']))
-      .reduce((a, b) => a.isAfter(b) ? a : b);
-
-  return lastDate; // Возвращаем последнюю дату за день
 }
 
 String phoneClearBel(String phone) {
@@ -290,143 +92,6 @@ String phoneClearBel(String phone) {
   formattedPhone += '***-**-${restOfNumber.substring(restOfNumber.length - 2)}';
 
   return formattedPhone;
-}
-
-List<DateTime>? listMonth(
-  List<dynamic>? json,
-  int limit,
-) {
-// Проверяем, что список не null и не пустой
-  if (json == null || json.isEmpty) {
-    return null;
-  }
-
-  // Используем Set для хранения уникальных дат по месяцам
-  Set<DateTime> uniqueMonths = {};
-
-  for (var data in json) {
-    // Преобразуем timestamp в DateTime
-    if (data is Map<String, dynamic> && data.containsKey('timestamp')) {
-      DateTime timestamp = DateTime.parse(data['timestamp']);
-      // Добавляем только месяц и год в Set, без конкретного дня
-      DateTime monthOnly = DateTime(timestamp.year, timestamp.month);
-      uniqueMonths.add(monthOnly);
-    }
-  }
-
-  // Преобразуем Set обратно в список и сортируем по возрастанию
-  List<DateTime> sortedMonths = uniqueMonths.toList()
-    ..sort((a, b) =>
-        b.compareTo(a)); // Сортировка по убыванию (от последних месяцев)
-
-  // Применяем лимит, если он указан
-  if (limit != null && limit > 0 && sortedMonths.length > limit) {
-    sortedMonths = sortedMonths.take(limit).toList();
-  }
-
-  return sortedMonths;
-}
-
-List<DateTime>? listDaysInMonth(
-  List<dynamic>? json,
-  DateTime month,
-) {
-  // Проверяем, что список не null и не пустой
-  if (json == null || json.isEmpty) {
-    return null;
-  }
-
-  // Используем Set для хранения уникальных дней в конкретном месяце
-  Set<DateTime> uniqueDays = {};
-
-  for (var data in json) {
-    // Преобразуем timestamp в DateTime
-    if (data is Map<String, dynamic> && data.containsKey('timestamp')) {
-      DateTime timestamp = DateTime.parse(data['timestamp']);
-
-      // Проверяем, что дата относится к указанному месяцу
-      if (timestamp.year == month.year && timestamp.month == month.month) {
-        // Добавляем полную дату (день, месяц, год) в Set
-        DateTime dayOnly =
-            DateTime(timestamp.year, timestamp.month, timestamp.day);
-        uniqueDays.add(dayOnly);
-      }
-    }
-  }
-
-  // Преобразуем Set обратно в список и сортируем по возрастанию дат
-  List<DateTime> sortedDays = uniqueDays.toList()
-    ..sort((a, b) =>
-        a.compareTo(b)); // Сортировка по возрастанию (от начала к концу месяца)
-
-  return sortedDays;
-}
-
-double differenceBetween2month(
-  List<dynamic>? json,
-  DateTime month,
-) {
-  if (json == null || json.isEmpty) {
-    return 0;
-  }
-
-  // Фильтруем данные для заданного месяца
-  List<dynamic> currentMonthData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == month.year && timestamp.month == month.month;
-  }).toList();
-
-  List<dynamic> previousMonthData = json.where((data) {
-    DateTime timestamp = DateTime.parse(data['timestamp']);
-    return timestamp.year == month.year && timestamp.month == month.month - 1;
-  }).toList();
-
-  // Сортируем данные по возрастанию дат
-  currentMonthData.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  previousMonthData.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  // Функция для суммирования расстояний между точками в рамках одного месяца
-  double calculateTotalDistance(List<dynamic> data) {
-    double totalDistance = 0.0;
-
-    for (int i = 0; i < data.length - 1; i++) {
-      LatLng? pointA = LatLng(data[i]['latitude'], data[i]['longitude']);
-      LatLng? pointB =
-          LatLng(data[i + 1]['latitude'], data[i + 1]['longitude']);
-      totalDistance += returnDistanceBetweenTwoPoints(pointA, pointB)!;
-    }
-
-    return totalDistance;
-  }
-
-  // Вычисляем суммарное расстояние для текущего и предыдущего месяца
-  double currentMonthDistance = calculateTotalDistance(currentMonthData);
-  double previousMonthDistance = calculateTotalDistance(previousMonthData);
-
-  // Возвращаем разницу между текущим и предыдущим месяцами
-  return currentMonthDistance - previousMonthDistance;
-}
-
-double? returnDistanceBetweenTwoPoints(
-    LatLng? positionOne, LatLng? positionTwo) {
-  var p = 0.017453292519943295;
-  var a = 0.5 -
-      math.cos((positionTwo!.latitude - positionOne!.latitude) * p) / 2 +
-      math.cos(positionOne.latitude * p) *
-          math.cos(positionTwo.latitude * p) *
-          (1 - math.cos((positionTwo.longitude - positionOne.longitude) * p)) /
-          2;
-  double result = 12742 * math.asin(math.sqrt(a));
-  return result; // возвращаем результат в километрах
 }
 
 bool phoneValidation(String phone) {
@@ -566,4 +231,102 @@ String? ageConvertString(int userAge) {
     default:
       return 'лет';
   }
+}
+
+List<MonthlyDTStruct> convertMonthlyJSON(dynamic monthlyJSON) {
+  final List<MonthlyDTStruct> monthlyList = [];
+
+  // Преобразуем входящий JSON в Map
+  final Map<String, dynamic> monthlyMap =
+      Map<String, dynamic>.from(monthlyJSON);
+
+  // Перебираем все ключи (месяцы) из JSON
+  monthlyMap.forEach((String monthAndYear, dynamic monthData) {
+    // Создаем новый экземпляр MonthlyDTStruct
+    final MonthlyDTStruct monthStruct = MonthlyDTStruct(
+      // Сохраняем ключ (дату) как monthAndYear
+      monthAndYear: monthAndYear,
+      // Получаем значения из вложенного объекта
+      reward: (monthData['reward'] as num).toDouble(),
+      distance: (monthData['distance'] as num).toDouble(),
+      averageSpeed: (monthData['averageSpeed'] as num).toDouble(),
+    );
+
+    // Добавляем созданную структуру в список
+    monthlyList.add(monthStruct);
+  });
+
+  return monthlyList;
+}
+
+String monthAndYearConvert(String monthAndYear) {
+// Разбиваем строку по дефису на год и месяц
+  final parts = monthAndYear.split('-');
+  if (parts.length != 2) return monthAndYear;
+
+  final year = parts[0];
+  final month = parts[1];
+
+  // Словарь соответствия номера месяца и названия
+  final monthNames = {
+    '01': 'Январь',
+    '02': 'Февраль',
+    '03': 'Март',
+    '04': 'Апрель',
+    '05': 'Май',
+    '06': 'Июнь',
+    '07': 'Июль',
+    '08': 'Август',
+    '09': 'Сентябрь',
+    '10': 'Октябрь',
+    '11': 'Ноябрь',
+    '12': 'Декабрь'
+  };
+
+  // Получаем название месяца из словаря
+  final monthName = monthNames[month] ?? month;
+
+  // Возвращаем отформатированную строку
+  return '$monthName $year';
+}
+
+List<DailyDTStruct> convertDailyJSON(dynamic json) {
+  final List<DailyDTStruct> dailyList = [];
+
+  // Преобразуем входящий JSON в Map
+  final Map<String, dynamic> dailyMap = Map<String, dynamic>.from(json);
+
+  // Перебираем все ключи (даты) из JSON
+  dailyMap.forEach((String date, dynamic dayData) {
+    // Создаем новый экземпляр DailyDTStruct
+    final DailyDTStruct dayStruct = DailyDTStruct(
+      // Сохраняем дату
+      day: date,
+      // Получаем значения из вложенного объекта
+      reward: (dayData['reward'] as num).toDouble(),
+      distance: (dayData['distance'] as num).toDouble(),
+      averageSpeed: (dayData['averageSpeed'] as num).toDouble(),
+    );
+
+    // Добавляем созданную структуру в список
+    dailyList.add(dayStruct);
+  });
+
+  // Сортируем список по дате в обратном порядке (новые даты первыми)
+  dailyList.sort((a, b) => b.day.compareTo(a.day));
+
+  return dailyList;
+}
+
+String convertDateFormat(String dateString) {
+// Разбиваем строку по дефису
+  final parts = dateString.split('-');
+  if (parts.length != 3) return dateString;
+
+  // Получаем день и месяц
+  final day = parts[2];
+  final month = parts[1];
+
+  // Возвращаем в формате ДД.ММ
+  return '$day.$month';
 }

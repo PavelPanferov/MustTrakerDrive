@@ -122,7 +122,7 @@ class _NavbarWidgetState extends State<NavbarWidget> {
                 onTap: () async {
                   if (widget.pageNumber != 2) {
                     context.pushNamed(
-                      'RidesPage',
+                      'RidesPageCopy',
                       extra: <String, dynamic>{
                         kTransitionInfoKey: const TransitionInfo(
                           hasTransition: true,

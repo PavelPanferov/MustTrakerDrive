@@ -1,5 +1,4 @@
 import 'dart:convert';
-import '../schema/structs/index.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -476,11 +475,10 @@ class TraksAllMonthCall {
         response,
         r'''$.total.averageSpeed''',
       ));
-  MonthlyDTStruct? monthlyJSON(dynamic response) =>
-      MonthlyDTStruct.maybeFromMap(getJsonField(
+  dynamic monthlyJSON(dynamic response) => getJsonField(
         response,
         r'''$.monthly''',
-      ));
+      );
 }
 
 class TraksByMonthDataCall {

@@ -2,10 +2,10 @@ import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/pages/components/navbar/navbar_widget.dart';
-import 'rides_page_copy_widget.dart' show RidesPageCopyWidget;
+import 'rides_page_copy_copy_widget.dart' show RidesPageCopyCopyWidget;
 import 'package:flutter/material.dart';
 
-class RidesPageCopyModel extends FlutterFlowModel<RidesPageCopyWidget> {
+class RidesPageCopyCopyModel extends FlutterFlowModel<RidesPageCopyCopyWidget> {
   ///  Local state fields for this page.
 
   double? totalDistance = 0.0;
@@ -28,7 +28,7 @@ class RidesPageCopyModel extends FlutterFlowModel<RidesPageCopyWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - API (traksAllMonth)] action in RidesPageCopy widget.
+  // Stores action output result for [Backend Call - API (traksAllMonth)] action in RidesPageCopyCopy widget.
   ApiCallResponse? apiResultAllDataMonth;
   // Model for navbar component.
   late NavbarModel navbarModel;

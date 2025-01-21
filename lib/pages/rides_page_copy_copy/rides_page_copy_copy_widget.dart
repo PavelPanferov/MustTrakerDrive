@@ -4,7 +4,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/pages/components/empty/empty_widget.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/pages/components/navbar/navbar_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:styled_divider/styled_divider.dart';
@@ -14,19 +14,20 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'rides_page_copy_model.dart';
-export 'rides_page_copy_model.dart';
+import 'rides_page_copy_copy_model.dart';
+export 'rides_page_copy_copy_model.dart';
 
-class RidesPageCopyWidget extends StatefulWidget {
-  const RidesPageCopyWidget({super.key});
+class RidesPageCopyCopyWidget extends StatefulWidget {
+  const RidesPageCopyCopyWidget({super.key});
 
   @override
-  State<RidesPageCopyWidget> createState() => _RidesPageCopyWidgetState();
+  State<RidesPageCopyCopyWidget> createState() =>
+      _RidesPageCopyCopyWidgetState();
 }
 
-class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
+class _RidesPageCopyCopyWidgetState extends State<RidesPageCopyCopyWidget>
     with TickerProviderStateMixin {
-  late RidesPageCopyModel _model;
+  late RidesPageCopyCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -35,7 +36,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => RidesPageCopyModel());
+    _model = createModel(context, () => RidesPageCopyCopyModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -78,7 +79,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
           FadeEffect(
             curve: Curves.easeInOut,
             delay: 0.0.ms,
-            duration: 400.0.ms,
+            duration: 200.0.ms,
             begin: 0.0,
             end: 1.0,
           ),
@@ -164,7 +165,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                             formatNumber(
                               _model.totalReward,
                               formatType: FormatType.custom,
-                              format: '#,##',
+                              format: '',
                               locale: '',
                             ),
                             '0',
@@ -221,9 +222,8 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                               child: Text(
                                 '${formatNumber(
                                   _model.totalDistance,
-                                  formatType: FormatType.custom,
-                                  format: '#,##',
-                                  locale: '',
+                                  formatType: FormatType.decimal,
+                                  decimalType: DecimalType.automatic,
                                 )} км',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -280,9 +280,8 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                     '${valueOrDefault<String>(
                                       formatNumber(
                                         _model.totalAverageSpeed,
-                                        formatType: FormatType.custom,
-                                        format: '#,##',
-                                        locale: '',
+                                        formatType: FormatType.decimal,
+                                        decimalType: DecimalType.automatic,
                                       ),
                                       '0',
                                     )} км/ч',
@@ -363,57 +362,58 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                             width: 0.0,
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 16.0, 0.0),
-                          child: Builder(
-                            builder: (context) {
-                              final month = _model.monthDataType.toList();
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 0.0, 16.0, 0.0),
+                              child: Builder(
+                                builder: (context) {
+                                  final month = _model.monthDataType.toList();
 
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                itemCount: month.length,
-                                itemBuilder: (context, monthIndex) {
-                                  final monthItem = month[monthIndex];
-                                  return ListView(
+                                  return ListView.builder(
                                     padding: EdgeInsets.zero,
-                                    primary: false,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
+                                    itemCount: month.length,
+                                    itemBuilder: (context, monthIndex) {
+                                      final monthItem = month[monthIndex];
+                                      return ListView(
+                                        padding: EdgeInsets.zero,
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
                                         children: [
-                                          Flexible(
-                                            child: Align(
-                                              alignment: const AlignmentDirectional(
-                                                  -1.0, 0.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Align(
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            -1.0, 0.0),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  8.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        functions
-                                                            .monthAndYearConvert(
-                                                                monthItem
-                                                                    .monthAndYear),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: Align(
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          -1.0, 0.0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                -1.0, 0.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      8.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
+                                                            'мес 2025',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .bodyLarge
                                                                 .override(
                                                                   fontFamily: FlutterFlowTheme.of(
@@ -432,118 +432,100 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                   lineHeight:
                                                                       2.0,
                                                                 ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      12.0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Text(
+                                                                'ф км',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyMediumFamily,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      useGoogleFonts: GoogleFonts
+                                                                              .asMap()
+                                                                          .containsKey(
+                                                                              FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                ' • ',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyMediumFamily,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      useGoogleFonts: GoogleFonts
+                                                                              .asMap()
+                                                                          .containsKey(
+                                                                              FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                'фы км/ч',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyMediumFamily,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      useGoogleFonts: GoogleFonts
+                                                                              .asMap()
+                                                                          .containsKey(
+                                                                              FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(12.0, 0.0,
-                                                                0.0, 12.0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: [
-                                                        Text(
-                                                          '${formatNumber(
-                                                            monthItem.distance,
-                                                            formatType:
-                                                                FormatType
-                                                                    .custom,
-                                                            format: '#,##',
-                                                            locale: '',
-                                                          )} км',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                fontSize: 12.0,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                        ),
-                                                        Text(
-                                                          ' • ',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                        ),
-                                                        Text(
-                                                          '${formatNumber(
-                                                            monthItem
-                                                                .averageSpeed,
-                                                            formatType:
-                                                                FormatType
-                                                                    .custom,
-                                                            format: '#,##',
-                                                            locale: '',
-                                                          )} км/ч',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                fontSize: 12.0,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment:
-                                                const AlignmentDirectional(1.0, 0.0),
-                                            child: Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 2.0, 0.0),
-                                              child: Text(
-                                                '+${valueOrDefault<String>(
-                                                  formatNumber(
-                                                    monthItem.reward,
-                                                    formatType:
-                                                        FormatType.custom,
-                                                    format: '#,##',
-                                                    locale: '',
-                                                  ),
-                                                  '0',
-                                                )}',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
+                                              Align(
+                                                alignment: const AlignmentDirectional(
+                                                    1.0, 0.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 2.0, 0.0),
+                                                  child: Text(
+                                                    '+41',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
                                                         .bodyMedium
                                                         .override(
                                                           fontFamily:
@@ -564,95 +546,43 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                           context)
                                                                       .bodyMediumFamily),
                                                         ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
-                                            child: Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 12.0, 0.0),
-                                              child: Container(
-                                                width: 16.0,
-                                                height: 16.0,
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: Image.asset(
-                                                      'assets/images/coin_1.png',
-                                                    ).image,
-                                                  ),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      FutureBuilder<ApiCallResponse>(
-                                        future: MustGamesAPIGroup
-                                            .traksByMonthDataCall
-                                            .call(
-                                          userToken: FFAppState().token,
-                                          isoMonth: monthItem.monthAndYear,
-                                          offset: 0,
-                                          limit: 31,
-                                        ),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 30.0,
-                                                height: 30.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          }
-                                          final containerTraksByMonthDataResponse =
-                                              snapshot.data!;
-
-                                          return Container(
-                                            decoration: const BoxDecoration(),
-                                            child: Builder(
-                                              builder: (context) {
-                                                final daily = functions
-                                                    .convertDailyJSON(
-                                                        MustGamesAPIGroup
-                                                            .traksByMonthDataCall
-                                                            .daily(
-                                                      containerTraksByMonthDataResponse
-                                                          .jsonBody,
-                                                    ))
-                                                    .toList();
-                                                if (daily.isEmpty) {
-                                                  return const EmptyWidget();
-                                                }
-
-                                                return ListView.separated(
-                                                  padding: EdgeInsets.zero,
-                                                  primary: false,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.vertical,
-                                                  itemCount: daily.length,
-                                                  separatorBuilder: (_, __) =>
-                                                      const SizedBox(height: 8.0),
-                                                  itemBuilder:
-                                                      (context, dailyIndex) {
-                                                    final dailyItem =
-                                                        daily[dailyIndex];
-                                                    return Container(
+                                              Align(
+                                                alignment: const AlignmentDirectional(
+                                                    0.0, 0.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 12.0, 0.0),
+                                                  child: Container(
+                                                    width: 16.0,
+                                                    height: 16.0,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: Image.asset(
+                                                          'assets/images/coin_1.png',
+                                                        ).image,
+                                                      ),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          ListView(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
                                                       decoration: BoxDecoration(
                                                         color:
                                                             FlutterFlowTheme.of(
@@ -685,15 +615,13 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                               header: Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
-                                                                        .min,
+                                                                        .max,
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    functions.convertDateFormat(
-                                                                        dailyItem
-                                                                            .day),
+                                                                    '14.07',
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .titleLarge
@@ -710,7 +638,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                               GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).titleLargeFamily),
                                                                         ),
                                                                   ),
-                                                                  Flexible(
+                                                                  Expanded(
                                                                     child: Row(
                                                                       mainAxisSize:
                                                                           MainAxisSize
@@ -751,15 +679,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                           ),
                                                                         ),
                                                                         Text(
-                                                                          '+${formatNumber(
-                                                                            dailyItem.reward,
-                                                                            formatType:
-                                                                                FormatType.custom,
-                                                                            format:
-                                                                                '#,##',
-                                                                            locale:
-                                                                                '',
-                                                                          )}',
+                                                                          '+41',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyMedium
                                                                               .override(
@@ -837,32 +757,18 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                 child: Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
-                                                                          .min,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
+                                                                          .max,
                                                                   children: [
-                                                                    Flexible(
+                                                                    Expanded(
                                                                       child:
                                                                           Row(
                                                                         mainAxisSize:
                                                                             MainAxisSize.max,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.end,
                                                                         children: [
                                                                           Text(
-                                                                            '${valueOrDefault<String>(
-                                                                              formatNumber(
-                                                                                dailyItem.distance,
-                                                                                formatType: FormatType.custom,
-                                                                                format: '#,##',
-                                                                                locale: '',
-                                                                              ),
-                                                                              '0',
-                                                                            )} км',
+                                                                            '0 км/ч',
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
                                                                                   letterSpacing: 0.0,
                                                                                   useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                 ),
@@ -877,18 +783,9 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                 ),
                                                                           ),
                                                                           Text(
-                                                                            '${valueOrDefault<String>(
-                                                                              formatNumber(
-                                                                                dailyItem.averageSpeed,
-                                                                                formatType: FormatType.custom,
-                                                                                format: '#,##',
-                                                                                locale: '',
-                                                                              ),
-                                                                              '0',
-                                                                            )} км/ч',
+                                                                            '0 км/ч',
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
                                                                                   letterSpacing: 0.0,
                                                                                   useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                 ),
@@ -917,10 +814,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                               expanded: Column(
                                                                 mainAxisSize:
                                                                     MainAxisSize
-                                                                        .min,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                        .max,
                                                                 children: [
                                                                   Padding(
                                                                     padding: const EdgeInsetsDirectional
@@ -932,24 +826,16 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                     child: Row(
                                                                       mainAxisSize:
                                                                           MainAxisSize
-                                                                              .min,
+                                                                              .max,
                                                                       children: [
-                                                                        Flexible(
+                                                                        Expanded(
                                                                           child:
                                                                               Row(
                                                                             mainAxisSize:
-                                                                                MainAxisSize.min,
+                                                                                MainAxisSize.max,
                                                                             children: [
                                                                               Text(
-                                                                                '${valueOrDefault<String>(
-                                                                                  formatNumber(
-                                                                                    dailyItem.distance,
-                                                                                    formatType: FormatType.custom,
-                                                                                    format: '#,##',
-                                                                                    locale: '',
-                                                                                  ),
-                                                                                  '0',
-                                                                                )} км',
+                                                                                '0 км/ч',
                                                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                       fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
                                                                                       color: FlutterFlowTheme.of(context).secondaryText,
@@ -967,15 +853,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                     ),
                                                                               ),
                                                                               Text(
-                                                                                '${valueOrDefault<String>(
-                                                                                  formatNumber(
-                                                                                    dailyItem.averageSpeed,
-                                                                                    formatType: FormatType.custom,
-                                                                                    format: '#,##',
-                                                                                    locale: '',
-                                                                                  ),
-                                                                                  '0',
-                                                                                )} км/ч',
+                                                                                '0 км/ч',
                                                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                       fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
                                                                                       color: FlutterFlowTheme.of(context).secondaryText,
@@ -983,18 +861,21 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                       useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
                                                                               ),
-                                                                              Flexible(
-                                                                                child: Align(
-                                                                                  alignment: const AlignmentDirectional(1.0, 0.0),
-                                                                                  child: Icon(
-                                                                                    Icons.keyboard_arrow_up,
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    size: 24.0,
-                                                                                  ).animateOnPageLoad(animationsMap['iconOnPageLoadAnimation']!),
-                                                                                ),
-                                                                              ),
                                                                             ],
                                                                           ),
+                                                                        ),
+                                                                        Align(
+                                                                          alignment: const AlignmentDirectional(
+                                                                              1.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.keyboard_arrow_up,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            size:
+                                                                                24.0,
+                                                                          ).animateOnPageLoad(animationsMap['iconOnPageLoadAnimation']!),
                                                                         ),
                                                                       ],
                                                                     ),
@@ -1015,8 +896,6 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                     padding:
                                                                         EdgeInsets
                                                                             .zero,
-                                                                    primary:
-                                                                        false,
                                                                     shrinkWrap:
                                                                         true,
                                                                     scrollDirection:
@@ -1024,19 +903,19 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                     children: [
                                                                       Row(
                                                                         mainAxisSize:
-                                                                            MainAxisSize.min,
+                                                                            MainAxisSize.max,
                                                                         crossAxisAlignment:
                                                                             CrossAxisAlignment.start,
                                                                         children: [
                                                                           Column(
                                                                             mainAxisSize:
-                                                                                MainAxisSize.min,
+                                                                                MainAxisSize.max,
                                                                             crossAxisAlignment:
                                                                                 CrossAxisAlignment.start,
                                                                             children:
                                                                                 [
                                                                               Row(
-                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                mainAxisSize: MainAxisSize.max,
                                                                                 children: [
                                                                                   Padding(
                                                                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
@@ -1070,15 +949,54 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                       ),
                                                                                     ),
                                                                                   ),
-                                                                                  Row(
-                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                  Expanded(
+                                                                                    child: Row(
+                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                      children: [
+                                                                                        Text(
+                                                                                          '0 км/ч',
+                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w500,
+                                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                              ),
+                                                                                        ),
+                                                                                        Text(
+                                                                                          ' • ',
+                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                                                color: FlutterFlowTheme.of(context).primary,
+                                                                                                letterSpacing: 0.0,
+                                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                              ),
+                                                                                        ),
+                                                                                        Text(
+                                                                                          '0 км/ч',
+                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w500,
+                                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                              ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                                                                  child: Row(
+                                                                                    mainAxisSize: MainAxisSize.max,
                                                                                     children: [
                                                                                       Text(
                                                                                         '0 км/ч',
                                                                                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                               fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                                              color: FlutterFlowTheme.of(context).secondaryText,
                                                                                               letterSpacing: 0.0,
-                                                                                              fontWeight: FontWeight.w500,
                                                                                               useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                             ),
                                                                                       ),
@@ -1095,53 +1013,18 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                         '0 км/ч',
                                                                                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                               fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                                                              color: FlutterFlowTheme.of(context).secondaryText,
                                                                                               letterSpacing: 0.0,
-                                                                                              fontWeight: FontWeight.w500,
                                                                                               useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                             ),
                                                                                       ),
                                                                                     ],
                                                                                   ),
-                                                                                ],
-                                                                              ),
-                                                                              Padding(
-                                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                                                                                child: Row(
-                                                                                  mainAxisSize: MainAxisSize.max,
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      '0 км/ч',
-                                                                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                            fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                                            color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                            letterSpacing: 0.0,
-                                                                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                          ),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      ' • ',
-                                                                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                            fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                                            color: FlutterFlowTheme.of(context).primary,
-                                                                                            letterSpacing: 0.0,
-                                                                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                          ),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      '0 км/ч',
-                                                                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                            fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                                                                                            color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                            letterSpacing: 0.0,
-                                                                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                          ),
-                                                                                    ),
-                                                                                  ],
                                                                                 ),
                                                                               ),
                                                                             ].divide(const SizedBox(height: 4.0)),
                                                                           ),
-                                                                          Flexible(
+                                                                          Expanded(
                                                                             child:
                                                                                 Row(
                                                                               mainAxisSize: MainAxisSize.max,
@@ -1202,20 +1085,72 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                           ),
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
+                                                    ),
+                                                  ),
+                                                ].divide(const SizedBox(height: 8.0)),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
-                          ),
+                              ),
+                            ),
+                            Align(
+                              alignment: const AlignmentDirectional(0.0, 1.0),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                child: FFButtonWidget(
+                                  onPressed: () {
+                                    print('Button pressed ...');
+                                  },
+                                  text: 'Показать предыдущие',
+                                  icon: Icon(
+                                    FFIcons.karrowCircle,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    size: 24.0,
+                                  ),
+                                  options: FFButtonOptions(
+                                    width: double.infinity,
+                                    height: 52.0,
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmallFamily,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w600,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmallFamily),
+                                          lineHeight: 1.25,
+                                        ),
+                                    elevation: 0.0,
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      width: 0.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

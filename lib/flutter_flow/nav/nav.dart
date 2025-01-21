@@ -105,11 +105,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const ProfilePageWidget(),
         ),
         FFRoute(
-          name: 'RidesPage',
-          path: '/ridesPage',
-          builder: (context, params) => const RidesPageWidget(),
-        ),
-        FFRoute(
           name: 'authBlockProfile',
           path: '/authBlockProfile',
           builder: (context, params) => const AuthBlockProfileWidget(),
@@ -118,6 +113,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'RidesPageCopy',
           path: '/ridesPageCopy',
           builder: (context, params) => const RidesPageCopyWidget(),
+        ),
+        FFRoute(
+          name: 'RidesPageCopyCopy',
+          path: '/ridesPageCopyCopy',
+          builder: (context, params) => const RidesPageCopyCopyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

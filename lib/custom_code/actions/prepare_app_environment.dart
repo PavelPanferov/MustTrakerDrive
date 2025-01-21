@@ -24,7 +24,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart'; // Добавьте этот импорт в начало
+import 'package:device_info_plus/device_info_plus.dart';
+import '/custom_code/actions/get_system_token.dart' as system_token;
 
 Future<bool> prepareAppEnvironment(
   String userID,
@@ -179,6 +180,19 @@ Future<bool> prepareAppEnvironment(
 
     // Получаем packageName
     String packageName = await getPackageName();
+
+    // Обновляем системный токен
+    try {
+      await system_token.getSystemToken();
+    } catch (e) {
+      print('Ошибка при обновлении системного токена: $e');
+      await showNotification(
+        'Ошибка авторизации',
+        'Не удалось обновить системный токен. Повторите попытку позже.',
+        null,
+      );
+      return false;
+    }
 
     // Сохраняем userID, userToken и packageName в SharedPreferences
     final prefs = await SharedPreferences.getInstance();
