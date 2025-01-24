@@ -180,12 +180,18 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                                                 }(),
                                               );
                                             } else {
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500));
                                               _model.prepareOutPut =
                                                   await actions
                                                       .prepareAppEnvironment(
                                                 FFAppState().userDataAPI.userID,
                                                 FFAppState().token,
                                               );
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 1000));
                                               if (_model.prepareOutPut!) {
                                                 FFAppState().tracker = true;
                                                 FFAppState().update(() {});

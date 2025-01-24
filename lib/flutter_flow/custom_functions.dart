@@ -10,46 +10,6 @@ import 'place.dart';
 import 'uploaded_file.dart';
 import '/backend/schema/structs/index.dart';
 
-double calculateTotalDistance(List<dynamic>? json) {
-  if (json == null || json.isEmpty) {
-    return 0; // Если данных нет, возвращаем 0
-  }
-
-  // Сортируем данные по возрастанию дат
-  json.sort((a, b) {
-    DateTime dateA = DateTime.parse(a['timestamp']);
-    DateTime dateB = DateTime.parse(b['timestamp']);
-    return dateA.compareTo(dateB);
-  });
-
-  // Суммируем расстояния между точками
-  double totalDistance = 0.0;
-
-  for (int i = 0; i < json.length - 1; i++) {
-    LatLng? pointA = LatLng(json[i]['latitude'], json[i]['longitude']);
-    LatLng? pointB = LatLng(json[i + 1]['latitude'], json[i + 1]['longitude']);
-    totalDistance += calculateDistance(
-        pointA, pointB)!; // Используем новую функцию calculateDistance
-  }
-
-  return totalDistance; // Возвращаем общее расстояние
-}
-
-// Функция для расчета расстояния между двумя точками
-double? calculateDistance(LatLng? positionOne, LatLng? positionTwo) {
-  if (positionOne == null || positionTwo == null)
-    return null; // Проверка на null
-  var p = 0.017453292519943295; // Конверсия градусов в радианы
-  var a = 0.5 -
-      math.cos((positionTwo.latitude - positionOne.latitude) * p) / 2 +
-      math.cos(positionOne.latitude * p) *
-          math.cos(positionTwo.latitude * p) *
-          (1 - math.cos((positionTwo.longitude - positionOne.longitude) * p)) /
-          2;
-  double result = 12742 * math.asin(math.sqrt(a)); // Расчет расстояния
-  return result; // Возвращаем результат в километрах
-}
-
 String hidePhone(String phone) {
   if (phone.startsWith('+7') && phone.length == 12) {
     // Формируем маскированный номер с закрытыми цифрами
@@ -329,4 +289,37 @@ String convertDateFormat(String dateString) {
 
   // Возвращаем в формате ДД.ММ
   return '$day.$month';
+}
+
+double? dailyCorrectionTotal(dynamic dailyJSON) {
+  // Проверяем, что JSON не null и содержит tracks
+  if (dailyJSON == null || !dailyJSON.containsKey('tracks')) {
+    return null;
+  }
+
+  try {
+    // Получаем список треков
+    List<dynamic> tracks = dailyJSON['tracks'];
+
+    // Если список пустой, возвращаем 0
+    if (tracks.isEmpty) {
+      return 0.0;
+    }
+
+    // Суммируем все rewardCorrection
+    double totalCorrection = tracks.fold(0.0, (sum, track) {
+      // Проверяем наличие rewardCorrection в треке
+      if (track is Map && track.containsKey('rewardCorrection')) {
+        // Преобразуем значение в double и добавляем к сумме
+        return sum + (track['rewardCorrection'] as num).toDouble();
+      }
+      return sum;
+    });
+
+    return totalCorrection;
+  } catch (e) {
+    // В случае ошибки возвращаем null
+    print('Error calculating daily correction total: $e');
+    return null;
+  }
 }

@@ -115,9 +115,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const RidesPageCopyWidget(),
         ),
         FFRoute(
-          name: 'RidesPageCopyCopy',
-          path: '/ridesPageCopyCopy',
-          builder: (context, params) => const RidesPageCopyCopyWidget(),
+          name: 'techPage',
+          path: '/techPage',
+          builder: (context, params) => TechPageWidget(
+            phone: params.getParam(
+              'phone',
+              ParamType.String,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

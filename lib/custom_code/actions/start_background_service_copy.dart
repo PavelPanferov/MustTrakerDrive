@@ -64,18 +64,18 @@ Future<dynamic> startBackgroundServiceCopy(
   print('Foreground Service started.');
 }
 
+/// Точка входа фонового сервиса
 @pragma('vm:entry-point')
 Future<void> onStart(ServiceInstance service) async {
-  // Храним таймер для возможности отмены
-  Timer? notificationUpdateTimer;
-  StreamSubscription<geolocator.Position>? _positionStream;
+  // Таймеры
+  Timer? locationTimer;
   Timer? dataSendTimer;
 
+  // Настраиваем Foreground уведомление (Android)
   if (Platform.isAndroid) {
     AndroidServiceInstance androidService = service as AndroidServiceInstance;
     await service.setAsForegroundService();
 
-    // Устанавливаем уведомление с иконкой
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
@@ -104,74 +104,24 @@ Future<void> onStart(ServiceInstance service) async {
   String? userToken = prefs.getString('userToken');
   String? packageName = prefs.getString('packageName');
 
-  // Проверяем, что данные получены
   if (userID == null || userToken == null || packageName == null) {
     print('Не удалось получить userID, userToken или packageName');
     service.stopSelf();
     return;
   }
 
-  // Подписываемся на изменения статуса службы геолокации
-  geolocator.Geolocator.getServiceStatusStream()
-      .listen((geolocator.ServiceStatus status) async {
-    if (status == geolocator.ServiceStatus.disabled) {
-      print('Службы геолокации отключены');
-    } else if (status == geolocator.ServiceStatus.enabled) {
-      print('Службы геолокации включены');
-      if (service is AndroidServiceInstance) {
-        service.setForegroundNotificationInfo(
-          title: 'Сервис активен',
-          content: 'Сбор местоположения выполняется',
-        );
-      }
+  // ---- ВМЕСТО потока geolocator.getPositionStream ----
+  // Запускаем таймер каждые 10 секунд, чтобы вызывать recordLocation()
+  locationTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+    try {
+      await recordLocation();
+    } catch (e) {
+      print('Ошибка в Timer.periodic(recordLocation): $e');
     }
   });
 
-  // Настройки для получения локации
-  final locationSettings = geolocator.LocationSettings(
-    accuracy: geolocator.LocationAccuracy.high,
-  );
-
-  // Запускаем поток геолокации
-  _positionStream = geolocator.Geolocator.getPositionStream(
-    locationSettings: locationSettings,
-  ).listen(
-    (geolocator.Position position) async {
-      try {
-        // Проверяем доступность геолокации
-        bool isLocationServiceEnabled =
-            await geolocator.Geolocator.isLocationServiceEnabled();
-
-        if (!isLocationServiceEnabled) {
-          print('GPS отключен');
-          return;
-        }
-
-        // Сохраняем в БД
-        DateTime now = DateTime.now();
-        String date = DateFormat('yyyy-MM-dd').format(now);
-
-        Map<String, dynamic> locationData = {
-          'latitude': position.latitude,
-          'longitude': position.longitude,
-          'timestamp': now.toIso8601String(),
-          'date': date,
-        };
-
-        await DatabaseHelper.instance.insert(locationData);
-        print(
-            'Координаты получены: ${position.latitude}, ${position.longitude}');
-      } catch (e) {
-        print('Ошибка при получении локации: $e');
-      }
-    },
-    onError: (error) {
-      print('Ошибка в потоке локаций: $error');
-    },
-  );
-
-  // Таймер для отправки данных на сервер - каждые 30 минут
-  dataSendTimer = Timer.periodic(const Duration(minutes: 30), (timer) async {
+  // Таймер для отправки данных на сервер каждые 5 минут (для теста; можете менять)
+  dataSendTimer = Timer.periodic(const Duration(minutes: 5), (timer) async {
     try {
       await sendDataToServer(userID);
     } catch (e) {
@@ -179,14 +129,14 @@ Future<void> onStart(ServiceInstance service) async {
     }
   });
 
-  // Слушаем команды для остановки сервиса
+  // Слушаем команду stopService
   service.on('stopService').listen((event) async {
     print('Получена команда остановки сервиса. Отправка данных...');
     await sendDataToServer(userID);
     print('Данные отправлены. Остановка сервиса...');
 
-    // Отменяем подписки
-    await _positionStream?.cancel();
+    // Отменяем таймеры
+    locationTimer?.cancel();
     dataSendTimer?.cancel();
 
     service.stopSelf();
@@ -305,9 +255,9 @@ Future<void> sendDataToServer(String userID) async {
     int totalRecords = allLocationData.length;
 
     // Проверяем минимальный порог записей
-    if (totalRecords < 50) {
+    if (totalRecords < 10) {
       print(
-          'Недостаточно записей для отправки ($totalRecords < 50). Ожидаем накопления данных.');
+          'Недостаточно записей для отправки ($totalRecords < 10). Ожидаем накопления данных.');
       return;
     }
 

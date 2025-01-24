@@ -26,10 +26,16 @@ class RidesPageCopyModel extends FlutterFlowModel<RidesPageCopyWidget> {
           int index, Function(MonthlyDTStruct) updateFn) =>
       monthDataType[index] = updateFn(monthDataType[index]);
 
+  int? offset = 0;
+
+  int? limit = 10;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - API (traksAllMonth)] action in RidesPageCopy widget.
   ApiCallResponse? apiResultAllDataMonth;
+  // Stores action output result for [Backend Call - API (traksAllMonth)] action in Button widget.
+  ApiCallResponse? apiResultAllDataMonthCopy;
   // Model for navbar component.
   late NavbarModel navbarModel;
 

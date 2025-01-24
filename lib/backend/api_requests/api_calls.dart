@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../schema/structs/index.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -530,11 +531,11 @@ class TraksByDayCall {
   }) async {
     final baseUrl = MustGamesAPIGroup.getBaseUrl();
 
-    const ffApiRequestBody = '''
+    final ffApiRequestBody = '''
 {
-  "isoDate": "2024-12-12",
-  "offset": 0,
-  "limit": 10
+  "isoDate": "${escapeStringForJson(isoDate)}",
+  "offset": $offset,
+  "limit": $limit
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'traksByDay',
@@ -554,6 +555,16 @@ class TraksByDayCall {
       alwaysAllowBody: false,
     );
   }
+
+  List<DayliTraksStruct>? traks(dynamic response) => (getJsonField(
+        response,
+        r'''$.tracks''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => DayliTraksStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End MustGamesAPI Group Code

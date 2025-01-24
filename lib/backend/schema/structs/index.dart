@@ -1,5 +1,6 @@
 export '/backend/schema/util/schema_util.dart';
 
+export 'dayli_traks_struct.dart';
 export 'daily_d_t_struct.dart';
 export 'driver_complete_d_t_struct.dart';
 export 'monthly_d_t_struct.dart';
