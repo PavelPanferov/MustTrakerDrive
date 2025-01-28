@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'splash_page_model.dart';
 export 'splash_page_model.dart';
@@ -274,20 +275,42 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primary,
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
+          body: Stack(
             children: [
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/splash.webp',
-                    width: double.infinity,
-                    height: MediaQuery.sizeOf(context).height * 1.0,
-                    fit: BoxFit.cover,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset(
+                        'assets/images/splash.webp',
+                        width: double.infinity,
+                        height: MediaQuery.sizeOf(context).height * 1.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ).animateOnPageLoad(
+                        animationsMap['imageOnPageLoadAnimation']!),
                   ),
-                ).animateOnPageLoad(animationsMap['imageOnPageLoadAnimation']!),
+                ],
+              ),
+              Align(
+                alignment: const AlignmentDirectional(0.0, 1.0),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
+                  child: Text(
+                    'v.1.0.11',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily:
+                              FlutterFlowTheme.of(context).bodyMediumFamily,
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          letterSpacing: 0.0,
+                          useGoogleFonts: GoogleFonts.asMap().containsKey(
+                              FlutterFlowTheme.of(context).bodyMediumFamily),
+                        ),
+                  ),
+                ),
               ),
             ],
           ),

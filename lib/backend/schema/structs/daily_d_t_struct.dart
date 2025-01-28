@@ -5,23 +5,23 @@ import '/backend/schema/util/schema_util.dart';
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
-class MonthlyDTStruct extends BaseStruct {
-  MonthlyDTStruct({
-    String? monthAndYear,
+class DailyDTStruct extends BaseStruct {
+  DailyDTStruct({
+    String? day,
     double? reward,
     double? distance,
     double? averageSpeed,
-  })  : _monthAndYear = monthAndYear,
+  })  : _day = day,
         _reward = reward,
         _distance = distance,
         _averageSpeed = averageSpeed;
 
-  // "monthAndYear" field.
-  String? _monthAndYear;
-  String get monthAndYear => _monthAndYear ?? '';
-  set monthAndYear(String? val) => _monthAndYear = val;
+  // "day" field.
+  String? _day;
+  String get day => _day ?? '';
+  set day(String? val) => _day = val;
 
-  bool hasMonthAndYear() => _monthAndYear != null;
+  bool hasDay() => _day != null;
 
   // "reward" field.
   double? _reward;
@@ -51,19 +51,18 @@ class MonthlyDTStruct extends BaseStruct {
 
   bool hasAverageSpeed() => _averageSpeed != null;
 
-  static MonthlyDTStruct fromMap(Map<String, dynamic> data) => MonthlyDTStruct(
-        monthAndYear: data['monthAndYear'] as String?,
+  static DailyDTStruct fromMap(Map<String, dynamic> data) => DailyDTStruct(
+        day: data['day'] as String?,
         reward: castToType<double>(data['reward']),
         distance: castToType<double>(data['distance']),
         averageSpeed: castToType<double>(data['averageSpeed']),
       );
 
-  static MonthlyDTStruct? maybeFromMap(dynamic data) => data is Map
-      ? MonthlyDTStruct.fromMap(data.cast<String, dynamic>())
-      : null;
+  static DailyDTStruct? maybeFromMap(dynamic data) =>
+      data is Map ? DailyDTStruct.fromMap(data.cast<String, dynamic>()) : null;
 
   Map<String, dynamic> toMap() => {
-        'monthAndYear': _monthAndYear,
+        'day': _day,
         'reward': _reward,
         'distance': _distance,
         'averageSpeed': _averageSpeed,
@@ -71,8 +70,8 @@ class MonthlyDTStruct extends BaseStruct {
 
   @override
   Map<String, dynamic> toSerializableMap() => {
-        'monthAndYear': serializeParam(
-          _monthAndYear,
+        'day': serializeParam(
+          _day,
           ParamType.String,
         ),
         'reward': serializeParam(
@@ -89,10 +88,10 @@ class MonthlyDTStruct extends BaseStruct {
         ),
       }.withoutNulls;
 
-  static MonthlyDTStruct fromSerializableMap(Map<String, dynamic> data) =>
-      MonthlyDTStruct(
-        monthAndYear: deserializeParam(
-          data['monthAndYear'],
+  static DailyDTStruct fromSerializableMap(Map<String, dynamic> data) =>
+      DailyDTStruct(
+        day: deserializeParam(
+          data['day'],
           ParamType.String,
           false,
         ),
@@ -114,12 +113,12 @@ class MonthlyDTStruct extends BaseStruct {
       );
 
   @override
-  String toString() => 'MonthlyDTStruct(${toMap()})';
+  String toString() => 'DailyDTStruct(${toMap()})';
 
   @override
   bool operator ==(Object other) {
-    return other is MonthlyDTStruct &&
-        monthAndYear == other.monthAndYear &&
+    return other is DailyDTStruct &&
+        day == other.day &&
         reward == other.reward &&
         distance == other.distance &&
         averageSpeed == other.averageSpeed;
@@ -127,17 +126,17 @@ class MonthlyDTStruct extends BaseStruct {
 
   @override
   int get hashCode =>
-      const ListEquality().hash([monthAndYear, reward, distance, averageSpeed]);
+      const ListEquality().hash([day, reward, distance, averageSpeed]);
 }
 
-MonthlyDTStruct createMonthlyDTStruct({
-  String? monthAndYear,
+DailyDTStruct createDailyDTStruct({
+  String? day,
   double? reward,
   double? distance,
   double? averageSpeed,
 }) =>
-    MonthlyDTStruct(
-      monthAndYear: monthAndYear,
+    DailyDTStruct(
+      day: day,
       reward: reward,
       distance: distance,
       averageSpeed: averageSpeed,

@@ -25,6 +25,7 @@ import 'package:permission_handler/permission_handler.dart'
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '/custom_code/actions/get_system_token.dart' as system_token;
 
 Future<dynamic> startBackgroundServiceCopy(
   String userToken,
@@ -63,18 +64,18 @@ Future<dynamic> startBackgroundServiceCopy(
   print('Foreground Service started.');
 }
 
+/// Точка входа фонового сервиса
 @pragma('vm:entry-point')
 Future<void> onStart(ServiceInstance service) async {
-  // Храним таймер для возможности отмены
-  Timer? notificationUpdateTimer;
-  StreamSubscription<geolocator.Position>? _positionStream;
+  // Таймеры
+  Timer? locationTimer;
   Timer? dataSendTimer;
 
+  // Настраиваем Foreground уведомление (Android)
   if (Platform.isAndroid) {
     AndroidServiceInstance androidService = service as AndroidServiceInstance;
     await service.setAsBackgroundService();
 
-    // Устанавливаем уведомление с иконкой
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
@@ -103,26 +104,19 @@ Future<void> onStart(ServiceInstance service) async {
   String? userToken = prefs.getString('userToken');
   String? packageName = prefs.getString('packageName');
 
-  // Проверяем, что данные получены
   if (userID == null || userToken == null || packageName == null) {
     print('Не удалось получить userID, userToken или packageName');
     service.stopSelf();
     return;
   }
 
-  // Подписываемся на изменения статуса службы геолокации
-  geolocator.Geolocator.getServiceStatusStream()
-      .listen((geolocator.ServiceStatus status) async {
-    if (status == geolocator.ServiceStatus.disabled) {
-      print('Службы геолокации отключены');
-    } else if (status == geolocator.ServiceStatus.enabled) {
-      print('Службы геолокации включены');
-      if (service is AndroidServiceInstance) {
-        service.setForegroundNotificationInfo(
-          title: 'Сервис активен',
-          content: 'Сбор местоположения выполняется',
-        );
-      }
+  // ---- ВМЕСТО потока geolocator.getPositionStream ----
+  // Запускаем таймер каждые 10 секунд, чтобы вызывать recordLocation()
+  locationTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+    try {
+      await recordLocation();
+    } catch (e) {
+      print('Ошибка в Timer.periodic(recordLocation): $e');
     }
   });
 
@@ -178,14 +172,14 @@ Future<void> onStart(ServiceInstance service) async {
     }
   });
 
-  // Слушаем команды для остановки сервиса
+  // Слушаем команду stopService
   service.on('stopService').listen((event) async {
     print('Получена команда остановки сервиса. Отправка данных...');
     await sendDataToServer(userID);
     print('Данные отправлены. Остановка сервиса...');
 
-    // Отменяем подписки
-    await _positionStream?.cancel();
+    // Отменяем таймеры
+    locationTimer?.cancel();
     dataSendTimer?.cancel();
 
     service.stopSelf();
@@ -272,61 +266,6 @@ Future<void> recordLocation() async {
   }
 }
 
-Future<String> getSystemToken() async {
-  int maxRetries = 3;
-  int retryCount = 0;
-
-  while (retryCount < maxRetries) {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('systemToken');
-      int? expiryTime = prefs.getInt('systemTokenExpiry');
-
-      int now = DateTime.now().millisecondsSinceEpoch;
-
-      if (token == null || expiryTime == null || now >= expiryTime) {
-        print('Получение нового SystemToken... Попытка ${retryCount + 1}');
-        var response = await http.post(
-          Uri.parse('https://api.must.io/api/systems/login'),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({
-            "systemName": "ProDriveTrackerApp",
-            "password": "jS`2@dc~Nn3~Y3e",
-            "daysTimeout": 1
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          var data = jsonDecode(response.body);
-          token = data['token'];
-          int expiryTimestamp = now + 23 * 3600 * 1000;
-          await prefs.setString('systemToken', token!);
-          await prefs.setInt('systemTokenExpiry', expiryTimestamp);
-          print(
-              'Новый SystemToken получен, истекает в ${DateTime.fromMillisecondsSinceEpoch(expiryTimestamp)}');
-        } else {
-          throw Exception(
-              'Не удалось получить SystemToken. Код ответа: ${response.statusCode}');
-        }
-      } else {
-        print('Используется существующий SystemToken');
-      }
-
-      return token!;
-    } catch (e) {
-      print('Ошибка при получении SystemToken: $e');
-      retryCount++;
-      if (retryCount < maxRetries) {
-        await Future.delayed(Duration(seconds: 5));
-        continue;
-      }
-      rethrow;
-    }
-  }
-
-  throw Exception('Не удалось получить SystemToken после $maxRetries попыток');
-}
-
 Future<void> sendDataToServer(String userID) async {
   try {
     // Получаем все накопленные данные местоположения из базы данных
@@ -348,7 +287,7 @@ Future<void> sendDataToServer(String userID) async {
     // Получаем SystemToken
     String systemToken;
     try {
-      systemToken = await getSystemToken();
+      systemToken = await system_token.getSystemToken();
     } catch (e) {
       print('Не удалось получить SystemToken: $e');
       return;
@@ -457,7 +396,7 @@ Future<void> sendDataToServer(String userID) async {
               }).toList(),
             };
 
-            String retryToken = await getSystemToken();
+            String retryToken = await system_token.getSystemToken();
             var response = await http.put(
               Uri.parse('https://must-games.back.must.io/api/tracker/gps-data'),
               headers: {
