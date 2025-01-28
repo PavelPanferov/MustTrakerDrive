@@ -28,9 +28,9 @@ Future<bool> showNotification(
       'my_foreground', // id
       'Мой Фоновый Сервис', // name
       channelDescription: 'Этот канал используется для важных уведомлений.',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
+      importance: Importance.low,
+      priority: Priority.low,
+      icon: '@mipmap/pro_driver_ic',
       playSound: false,
       enableVibration: false,
       ongoing: true,

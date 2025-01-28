@@ -192,7 +192,7 @@ Future<bool> prepareAppEnvironment(
 
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@mipmap/pro_driver_ic'),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
         if (response.payload == 'open_settings') {
@@ -215,8 +215,8 @@ Future<bool> prepareAppEnvironment(
         'my_foreground',
         'Мой Фоновый Сервис',
         description: 'Этот канал используется для важных уведомлений.',
-        importance: Importance.high,
-        enableLights: true,
+        importance: Importance.none,
+        enableLights: false,
         enableVibration: false,
         playSound: false,
         showBadge: true,

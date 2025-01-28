@@ -109,11 +109,11 @@ dev_dependencies:
 
 
 flutter_launcher_icons:
-  android: 'launcher_icon'
+  android: 'pro_driver_ic'
   ios: true
   web:
     generate: true
-  image_path: 'assets/images/app_launcher_icon.jpg'
+  image_path: 'assets/images/pro_driver_ic.jpeg'
   adaptive_icon_background: '#000000'
   adaptive_icon_foreground: 'assets/images/adaptive_foreground_icon.jpg'
 
