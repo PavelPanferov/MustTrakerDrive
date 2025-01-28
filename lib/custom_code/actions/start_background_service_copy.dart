@@ -46,7 +46,7 @@ Future<dynamic> startBackgroundServiceCopy(
     androidConfiguration: AndroidConfiguration(
       onStart: onStart,
       autoStart: true,
-      isForegroundMode: false,
+      isForegroundMode: true,
       notificationChannelId: 'my_foreground',
       initialNotificationTitle: 'Сервис запущен',
       initialNotificationContent: 'Сбор местоположения активен',
@@ -74,7 +74,7 @@ Future<void> onStart(ServiceInstance service) async {
   // Настраиваем Foreground уведомление (Android)
   if (Platform.isAndroid) {
     AndroidServiceInstance androidService = service as AndroidServiceInstance;
-    await service.setAsBackgroundService();
+    await service.setAsForegroundService();
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();

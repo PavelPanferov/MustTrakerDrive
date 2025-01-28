@@ -27,33 +27,23 @@ Future requestIgnoreBatteryOptimizations() async {
       if (sdkInt >= 23) {
         // Android 6.0+ (включая Android 8)
         try {
-          // Сначала проверяем, не включено ли уже игнорирование
-          final isIgnoringBatteryOptimizations = await AndroidIntent(
-            action: 'android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
-            data: 'package:$packageName',
-          ).canResolveActivity();
-
-          if (isIgnoringBatteryOptimizations != true) {
-            // Изменено здесь
-            // Для Android 8 используем более мягкий подход
-            if (sdkInt <= 27) {
-              // Android 8.1 и ниже
-              final intent = AndroidIntent(
-                action: 'android.settings.BATTERY_SAVER_SETTINGS',
-              );
-              await intent.launch();
-              print('Открыты настройки энергосбережения');
-            } else {
-              // Для более новых версий используем прямой запрос
-              final intent = AndroidIntent(
-                action: 'android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
-                data: 'package:$packageName',
-              );
-              await intent.launch();
-              print('Запрос на игнорирование оптимизации батареи отправлен');
-            }
+          // Изменено здесь
+          // Для Android 8 используем более мягкий подход
+          if (sdkInt <= 27) {
+            // Android 8.1 и ниже
+            final intent = AndroidIntent(
+              action: 'android.settings.BATTERY_SAVER_SETTINGS',
+            );
+            await intent.launch();
+            print('Открыты настройки энергосбережения');
           } else {
-            print('Оптимизация батареи уже отключена для приложения');
+            // Для более новых версий используем прямой запрос
+            final intent = AndroidIntent(
+              action: 'android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
+              data: 'package:$packageName',
+            );
+            await intent.launch();
+            print('Запрос на игнорирование оптимизации батареи отправлен');
           }
         } catch (e) {
           print('Ошибка при запросе оптимизации батареи: $e');
