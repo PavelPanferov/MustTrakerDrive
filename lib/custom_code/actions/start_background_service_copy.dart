@@ -83,10 +83,10 @@ Future<void> onStart(ServiceInstance service) async {
       'my_foreground',
       'Мой Фоновый Сервис',
       channelDescription: 'Этот канал используется для важных уведомлений.',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-      ongoing: true,
+      importance: Importance.low,
+      priority: Priority.low,
+      icon: '@mipmap/pro_driver_ic',
+      ongoing: false,
     );
 
     await flutterLocalNotificationsPlugin.show(
@@ -170,7 +170,7 @@ Future<void> onStart(ServiceInstance service) async {
   );
 
   // Таймер для отправки данных на сервер - каждые 30 минут
-  dataSendTimer = Timer.periodic(const Duration(minutes: 30), (timer) async {
+  dataSendTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
     try {
       await sendDataToServer(userID);
     } catch (e) {
@@ -359,9 +359,9 @@ Future<void> sendDataToServer(String userID) async {
     int totalRecords = allLocationData.length;
 
     // Проверяем минимальный порог записей
-    if (totalRecords < 50) {
+    if (totalRecords < 10) {
       print(
-          'Недостаточно записей для отправки ($totalRecords < 50). Ожидаем накопления данных.');
+          'Недостаточно записей для отправки ($totalRecords < 10). Ожидаем накопления данных.');
       return;
     }
 
