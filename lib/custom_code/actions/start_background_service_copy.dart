@@ -125,44 +125,6 @@ Future<void> onStart(ServiceInstance service) async {
     accuracy: geolocator.LocationAccuracy.high,
   );
 
-  // Запускаем поток геолокации
-  _positionStream = geolocator.Geolocator.getPositionStream(
-    locationSettings: locationSettings,
-  ).listen(
-    (geolocator.Position position) async {
-      try {
-        // Проверяем доступность геолокации
-        bool isLocationServiceEnabled =
-            await geolocator.Geolocator.isLocationServiceEnabled();
-
-        if (!isLocationServiceEnabled) {
-          print('GPS отключен');
-          return;
-        }
-
-        // Сохраняем в БД
-        DateTime now = DateTime.utc();
-        String date = DateFormat('yyyy-MM-dd').format(now);
-
-        Map<String, dynamic> locationData = {
-          'latitude': position.latitude,
-          'longitude': position.longitude,
-          'timestamp': now.toIso8601String(),
-          'date': date,
-        };
-
-        await DatabaseHelper.instance.insert(locationData);
-        print(
-            'Координаты получены: ${position.latitude}, ${position.longitude}');
-      } catch (e) {
-        print('Ошибка при получении локации: $e');
-      }
-    },
-    onError: (error) {
-      print('Ошибка в потоке локаций: $error');
-    },
-  );
-
   // Таймер для отправки данных на сервер - каждые 30 минут
   dataSendTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
     try {
