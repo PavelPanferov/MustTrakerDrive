@@ -140,6 +140,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "dotted_decoration",
+      "rootUri": "file:///Users/seytiproger/.pub-cache/hosted/pub.dev/dotted_decoration-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "easy_debounce",
       "rootUri": "file:///Users/seytiproger/.pub-cache/hosted/pub.dev/easy_debounce-2.0.1",
       "packageUri": "lib/",
@@ -746,6 +752,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "styled_divider",
+      "rootUri": "file:///Users/seytiproger/.pub-cache/hosted/pub.dev/styled_divider-1.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "synchronized",
       "rootUri": "file:///Users/seytiproger/.pub-cache/hosted/pub.dev/synchronized-3.3.0+3",
       "packageUri": "lib/",
@@ -902,7 +914,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-01-27T14:28:25.678546Z",
+  "generated": "2025-01-28T10:32:53.906137Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///Users/seytiproger/fvm/versions/3.24.2",
