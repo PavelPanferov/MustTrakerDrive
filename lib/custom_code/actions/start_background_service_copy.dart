@@ -147,7 +147,7 @@ Future<void> onStart(ServiceInstance service) async {
         }
 
         // Сохраняем в БД
-        DateTime now = DateTime.now();
+        DateTime now = DateTime.utc();
         String date = DateFormat('yyyy-MM-dd').format(now);
 
         Map<String, dynamic> locationData = {
@@ -248,7 +248,7 @@ Future<void> recordLocation() async {
         await geolocator.Geolocator.getCurrentPosition(
             desiredAccuracy: geolocator.LocationAccuracy.high);
 
-    DateTime now = DateTime.now();
+    DateTime now = DateTime.timestamp();
     String date = DateFormat('yyyy-MM-dd').format(now);
 
     // Формируем данные для сохранения
