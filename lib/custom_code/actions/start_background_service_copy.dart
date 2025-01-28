@@ -199,15 +199,13 @@ Future<void> recordLocation() async {
         await geolocator.Geolocator.getCurrentPosition(
             desiredAccuracy: geolocator.LocationAccuracy.high);
 
-    DateTime now = DateTime.now();
-    String date = DateFormat('yyyy-MM-dd').format(now);
-
-    // Формируем данные для сохранения
+    // ЗАМЕНИТЬ НА:
+    DateTime nowUtc = DateTime.now().toUtc();
     Map<String, dynamic> locationData = {
       'latitude': position.latitude,
       'longitude': position.longitude,
-      'timestamp': now.toIso8601String(),
-      'date': date,
+      'timestamp': nowUtc.toIso8601String(),
+      'date': DateFormat('yyyy-MM-dd').format(nowUtc),
     };
 
     // Сохраняем данные в локальную базу данных SQLite
@@ -271,10 +269,11 @@ Future<void> sendDataToServer(String userID) async {
       List<int> idsToDelete = batch.map((e) => e['id'] as int).toList();
 
       var coordinates = batch.map((e) {
+        var dt = DateTime.parse(e['timestamp']).toUtc();
         return {
           "latitude": e['latitude'],
           "longitude": e['longitude'],
-          "dateTime": e['timestamp'],
+          "dateTime": dt.toIso8601String(),
         };
       }).toList();
 

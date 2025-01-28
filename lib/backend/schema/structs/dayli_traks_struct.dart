@@ -12,15 +12,15 @@ class DayliTraksStruct extends BaseStruct {
     double? distance,
     double? rewardTotal,
     int? rewardCorrection,
-    String? startDatetime,
-    String? endDatetime,
+    String? startDate,
+    String? endDate,
   })  : _isFraud = isFraud,
         _averageSpeed = averageSpeed,
         _distance = distance,
         _rewardTotal = rewardTotal,
         _rewardCorrection = rewardCorrection,
-        _startDatetime = startDatetime,
-        _endDatetime = endDatetime;
+        _startDate = startDate,
+        _endDate = endDate;
 
   // "isFraud" field.
   bool? _isFraud;
@@ -68,19 +68,19 @@ class DayliTraksStruct extends BaseStruct {
 
   bool hasRewardCorrection() => _rewardCorrection != null;
 
-  // "startDatetime" field.
-  String? _startDatetime;
-  String get startDatetime => _startDatetime ?? '';
-  set startDatetime(String? val) => _startDatetime = val;
+  // "startDate" field.
+  String? _startDate;
+  String get startDate => _startDate ?? '';
+  set startDate(String? val) => _startDate = val;
 
-  bool hasStartDatetime() => _startDatetime != null;
+  bool hasStartDate() => _startDate != null;
 
-  // "endDatetime" field.
-  String? _endDatetime;
-  String get endDatetime => _endDatetime ?? '';
-  set endDatetime(String? val) => _endDatetime = val;
+  // "endDate" field.
+  String? _endDate;
+  String get endDate => _endDate ?? '';
+  set endDate(String? val) => _endDate = val;
 
-  bool hasEndDatetime() => _endDatetime != null;
+  bool hasEndDate() => _endDate != null;
 
   static DayliTraksStruct fromMap(Map<String, dynamic> data) =>
       DayliTraksStruct(
@@ -89,8 +89,8 @@ class DayliTraksStruct extends BaseStruct {
         distance: castToType<double>(data['distance']),
         rewardTotal: castToType<double>(data['rewardTotal']),
         rewardCorrection: castToType<int>(data['rewardCorrection']),
-        startDatetime: data['startDatetime'] as String?,
-        endDatetime: data['endDatetime'] as String?,
+        startDate: data['startDate'] as String?,
+        endDate: data['endDate'] as String?,
       );
 
   static DayliTraksStruct? maybeFromMap(dynamic data) => data is Map
@@ -103,8 +103,8 @@ class DayliTraksStruct extends BaseStruct {
         'distance': _distance,
         'rewardTotal': _rewardTotal,
         'rewardCorrection': _rewardCorrection,
-        'startDatetime': _startDatetime,
-        'endDatetime': _endDatetime,
+        'startDate': _startDate,
+        'endDate': _endDate,
       }.withoutNulls;
 
   @override
@@ -129,12 +129,12 @@ class DayliTraksStruct extends BaseStruct {
           _rewardCorrection,
           ParamType.int,
         ),
-        'startDatetime': serializeParam(
-          _startDatetime,
+        'startDate': serializeParam(
+          _startDate,
           ParamType.String,
         ),
-        'endDatetime': serializeParam(
-          _endDatetime,
+        'endDate': serializeParam(
+          _endDate,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -166,13 +166,13 @@ class DayliTraksStruct extends BaseStruct {
           ParamType.int,
           false,
         ),
-        startDatetime: deserializeParam(
-          data['startDatetime'],
+        startDate: deserializeParam(
+          data['startDate'],
           ParamType.String,
           false,
         ),
-        endDatetime: deserializeParam(
-          data['endDatetime'],
+        endDate: deserializeParam(
+          data['endDate'],
           ParamType.String,
           false,
         ),
@@ -189,8 +189,8 @@ class DayliTraksStruct extends BaseStruct {
         distance == other.distance &&
         rewardTotal == other.rewardTotal &&
         rewardCorrection == other.rewardCorrection &&
-        startDatetime == other.startDatetime &&
-        endDatetime == other.endDatetime;
+        startDate == other.startDate &&
+        endDate == other.endDate;
   }
 
   @override
@@ -200,8 +200,8 @@ class DayliTraksStruct extends BaseStruct {
         distance,
         rewardTotal,
         rewardCorrection,
-        startDatetime,
-        endDatetime
+        startDate,
+        endDate
       ]);
 }
 
@@ -211,8 +211,8 @@ DayliTraksStruct createDayliTraksStruct({
   double? distance,
   double? rewardTotal,
   int? rewardCorrection,
-  String? startDatetime,
-  String? endDatetime,
+  String? startDate,
+  String? endDate,
 }) =>
     DayliTraksStruct(
       isFraud: isFraud,
@@ -220,6 +220,6 @@ DayliTraksStruct createDayliTraksStruct({
       distance: distance,
       rewardTotal: rewardTotal,
       rewardCorrection: rewardCorrection,
-      startDatetime: startDatetime,
-      endDatetime: endDatetime,
+      startDate: startDate,
+      endDate: endDate,
     );

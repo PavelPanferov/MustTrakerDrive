@@ -410,7 +410,21 @@ class LocationUserPuttCall {
     final baseUrl = MustGamesAPIGroup.getBaseUrl();
 
     const ffApiRequestBody = '''
-''';
+{
+    "userId": 8585,
+    "coordinates": [
+        {
+            "latitude": 55.7558,
+            "longitude": 37.6173,
+            "dateTime": "2024-01-24T10:30:00.000Z"
+        },
+        {
+            "latitude": 55.7578,
+            "longitude": 37.6183,
+            "dateTime": "2024-01-24T10:35:00.000Z"
+        }
+    ]
+}''';
     return ApiManager.instance.makeApiCall(
       callName: 'locationUserPutt',
       apiUrl: '$baseUrl/gps-data',
@@ -565,6 +579,24 @@ class TraksByDayCall {
           .map((x) => DayliTraksStruct.maybeFromMap(x))
           .withoutNulls
           .toList();
+  List<String>? startDate(dynamic response) => (getJsonField(
+        response,
+        r'''$.tracks[:].startDate''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  List<String>? endDate(dynamic response) => (getJsonField(
+        response,
+        r'''$.tracks[:].endDate''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End MustGamesAPI Group Code
@@ -584,7 +616,7 @@ class TesttttCall {
       callType: ApiCallType.PUT,
       headers: {
         'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlByb0RyaXZlVHJhY2tlckFwcCIsInJvbGUiOiJTeXN0ZW0iLCJuYmYiOjE3MzY5NTEyNTIsImV4cCI6MTczNzAzNzY1MiwiaWF0IjoxNzM2OTUxMjUyfQ.UsnoAnaeR12RYDTHVt2UVQgDfqIyQy8trKJFOEBjVmw',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlByb0RyaXZlVHJhY2tlckFwcCIsInJvbGUiOiJTeXN0ZW0iLCJuYmYiOjE3Mzc3MzUyNzEsImV4cCI6MTczNzgyMTY3MSwiaWF0IjoxNzM3NzM1MjcxfQ.tEjXnLquZI9-GytOyFDacKZQHBRvsE3JxR3x-pUPrG4',
       },
       params: {},
       body: ffApiRequestBody,

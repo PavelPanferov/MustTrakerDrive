@@ -99,14 +99,20 @@ String phoneClearRU(String phone) {
 }
 
 DateTime? stringToDateTime(String? string) {
-  // convert string to datetime (exemple "1975-02-05T00:00:00.000Z"
-  if (string == null) {
+  // Добавим отладочную печать для проверки входных данных
+  print('Input string: $string');
+
+  if (string == null || string.isEmpty) {
+    print('String is null or empty');
     return null;
   }
 
   try {
-    return DateTime.parse(string);
+    final DateTime result = DateTime.parse(string.trim());
+    print('Parsed datetime: $result');
+    return result;
   } catch (e) {
+    print('Error parsing date: $e');
     return null;
   }
 }
@@ -320,6 +326,73 @@ double? dailyCorrectionTotal(dynamic dailyJSON) {
   } catch (e) {
     // В случае ошибки возвращаем null
     print('Error calculating daily correction total: $e');
+    return null;
+  }
+}
+
+double? dayJSONrewardCorrection(dynamic jSONDay) {
+  // Проверяем что входные данные не null и содержат tracks
+  if (jSONDay == null || !(jSONDay is Map) || !jSONDay.containsKey('tracks')) {
+    return null;
+  }
+
+  try {
+    // Получаем список треков
+    List<dynamic> tracks = jSONDay['tracks'];
+
+    // Если список пустой, возвращаем 0
+    if (tracks.isEmpty) {
+      return 0.0;
+    }
+
+    // Суммируем все rewardCorrection
+    double totalCorrection = tracks.fold(0.0, (sum, track) {
+      if (track is Map && track.containsKey('rewardCorrection')) {
+        return sum + (track['rewardCorrection'] as num).toDouble();
+      }
+      return sum;
+    });
+
+    return totalCorrection;
+  } catch (e) {
+    print('Error calculating daily reward correction: $e');
+    return null;
+  }
+}
+
+int? dayJSONtracksCount(dynamic jSONDay) {
+  if (jSONDay == null || !(jSONDay is Map) || !jSONDay.containsKey('tracks')) {
+    return null;
+  }
+
+  try {
+    // Получаем список треков
+    List<dynamic> tracks = jSONDay['tracks'];
+
+    // Возвращаем количество треков
+    return tracks.length;
+  } catch (e) {
+    print('Error calculating tracks count: $e');
+    return null;
+  }
+}
+
+int? getMonthlyCount(dynamic jsonData) {
+// Проверяем что входные данные не null и содержат monthly
+  if (jsonData == null ||
+      !(jsonData is Map) ||
+      !jsonData.containsKey('monthly')) {
+    return null;
+  }
+
+  try {
+    // Получаем объект monthly
+    Map<String, dynamic> monthly = jsonData['monthly'];
+
+    // Возвращаем количество ключей (месяцев)
+    return monthly.length;
+  } catch (e) {
+    print('Error calculating monthly count: $e');
     return null;
   }
 }
