@@ -11,4 +11,4 @@ export '/auth/auth_block_profile/auth_block_profile_widget.dart'
     show AuthBlockProfileWidget;
 export '/pages/rides_page_copy/rides_page_copy_widget.dart'
     show RidesPageCopyWidget;
-export '/pages/tech_page/tech_page_widget.dart' show TechPageWidget;
+export '/auth/profile_block/profile_block_widget.dart' show ProfileBlockWidget;

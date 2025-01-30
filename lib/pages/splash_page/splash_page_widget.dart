@@ -40,6 +40,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
           token: FFAppState().token,
         );
 
+        await Future.delayed(const Duration(milliseconds: 350));
         if ((_model.profileGetCheck?.succeeded ?? true)) {
           FFAppState().userDataAPI = UserInformationStruct(
             firstName: valueOrDefault<String>(
@@ -104,6 +105,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
               userCrossSystemId: FFAppState().userDataAPI.userID,
             );
 
+            await Future.delayed(const Duration(milliseconds: 350));
             if ((_model.driverNumberApiResult?.succeeded ?? true)) {
               if (MUSTProDriveGroup.normalizedHumanDataCall.seriesAndNumber(
                         (_model.driverNumberApiResult?.jsonBody ?? ''),
@@ -198,7 +200,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
             );
 
             context.goNamed(
-              'authBlockProfile',
+              'profileBlock',
               extra: <String, dynamic>{
                 kTransitionInfoKey: const TransitionInfo(
                   hasTransition: true,
@@ -300,7 +302,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
                   child: Text(
-                    'v.1.0.11',
+                    'v.1.0.12',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily:
                               FlutterFlowTheme.of(context).bodyMediumFamily,

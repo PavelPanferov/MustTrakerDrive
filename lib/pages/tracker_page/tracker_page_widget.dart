@@ -90,11 +90,13 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                const Spacer(flex: 3),
                                 AutoSizeText(
                                   'Работай! Играй! Побеждай!',
                                   textAlign: TextAlign.center,
@@ -114,131 +116,131 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                                         lineHeight: 1.3,
                                       ),
                                 ),
-                                AutoSizeText(
-                                  'За каждую поездку с включенным трекером тебе и твоей команде будут начисляться золотые монеты КМТ.\n👇 Включи трекер',
-                                  textAlign: TextAlign.center,
-                                  maxLines: 4,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .bodyMediumFamily,
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                        letterSpacing: 0.0,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                        lineHeight: 1.5,
-                                      ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 8.0, 0.0, 0.0),
+                                  child: AutoSizeText(
+                                    'За каждую поездку с включенным трекером тебе и твоей команде будут начисляться золотые монеты КМТ.\n👇 Включи трекер',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 4,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                          lineHeight: 1.5,
+                                        ),
+                                  ),
                                 ),
+                                const Spacer(),
                                 Stack(
                                   alignment: const AlignmentDirectional(0.0, 1.0),
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 20.0, 0.0, 0.0),
-                                      child: SizedBox(
+                                    SizedBox(
+                                      width: 200.0,
+                                      height: 60.0,
+                                      child: custom_widgets.CustomSlider(
                                         width: 200.0,
                                         height: 60.0,
-                                        child: custom_widgets.CustomSlider(
-                                          width: 200.0,
-                                          height: 60.0,
-                                          tracker: FFAppState().tracker,
-                                          iconON: Icon(
-                                            FFIcons.kcup2,
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                            size: 46.0,
-                                          ),
-                                          iconOFF: Icon(
-                                            FFIcons.kstopnew,
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                            size: 44.0,
-                                          ),
-                                          colorON: FlutterFlowTheme.of(context)
-                                              .success,
-                                          colorOFF: FlutterFlowTheme.of(context)
-                                              .error,
-                                          textON: 'В турнире',
-                                          textOFF: 'Выключен',
-                                          fontSize: 18.0,
-                                          fontWeight: 700.0,
-                                          textPadding: 22.0,
-                                          iconPaddingRight: 8.0,
-                                          iconPaddingLeft: 4.0,
-                                          onChanged: () async {
-                                            if (FFAppState().tracker) {
-                                              FFAppState().tracker = false;
+                                        tracker: FFAppState().tracker,
+                                        iconON: Icon(
+                                          FFIcons.kcup2,
+                                          color:
+                                              FlutterFlowTheme.of(context).info,
+                                          size: 46.0,
+                                        ),
+                                        iconOFF: Icon(
+                                          FFIcons.kstopnew,
+                                          color:
+                                              FlutterFlowTheme.of(context).info,
+                                          size: 44.0,
+                                        ),
+                                        colorON: FlutterFlowTheme.of(context)
+                                            .success,
+                                        colorOFF:
+                                            FlutterFlowTheme.of(context).error,
+                                        textON: 'В турнире',
+                                        textOFF: 'Выключен',
+                                        fontSize: 18.0,
+                                        fontWeight: 700.0,
+                                        textPadding: 22.0,
+                                        iconPaddingRight: 8.0,
+                                        iconPaddingLeft: 4.0,
+                                        onChanged: () async {
+                                          if (FFAppState().tracker) {
+                                            FFAppState().tracker = false;
+                                            FFAppState().update(() {});
+                                            unawaited(
+                                              () async {
+                                                await actions
+                                                    .stopBackgroundService();
+                                              }(),
+                                            );
+                                          } else {
+                                            await Future.delayed(const Duration(
+                                                milliseconds: 500));
+                                            _model.prepareOutPut = await actions
+                                                .prepareAppEnvironment(
+                                              FFAppState().userDataAPI.userID,
+                                              FFAppState().token,
+                                            );
+                                            await Future.delayed(const Duration(
+                                                milliseconds: 1000));
+                                            if (_model.prepareOutPut!) {
+                                              FFAppState().tracker = true;
                                               FFAppState().update(() {});
                                               unawaited(
                                                 () async {
-                                                  await actions
-                                                      .stopBackgroundService();
+                                                  _model.startBGService =
+                                                      await actions
+                                                          .startBackgroundServiceCopy(
+                                                    FFAppState().token,
+                                                    FFAppState()
+                                                        .userDataAPI
+                                                        .userID,
+                                                  );
                                                 }(),
                                               );
                                             } else {
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 500));
-                                              _model.prepareOutPut =
-                                                  await actions
-                                                      .prepareAppEnvironment(
-                                                FFAppState().userDataAPI.userID,
-                                                FFAppState().token,
-                                              );
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 1000));
-                                              if (_model.prepareOutPut!) {
-                                                FFAppState().tracker = true;
-                                                FFAppState().update(() {});
-                                                unawaited(
-                                                  () async {
-                                                    _model.startBGService =
-                                                        await actions
-                                                            .startBackgroundServiceCopy(
-                                                      FFAppState().token,
-                                                      FFAppState()
-                                                          .userDataAPI
-                                                          .userID,
-                                                    );
-                                                  }(),
-                                                );
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Необходимо предоставить разрешения для работы приложения!',
-                                                      style: TextStyle(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                      ),
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Необходимо предоставить разрешения для работы приложения!',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
                                                     ),
-                                                    duration: const Duration(
-                                                        milliseconds: 4000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .secondary,
                                                   ),
-                                                );
-                                              }
+                                                  duration: const Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                ),
+                                              );
                                             }
+                                          }
 
-                                            safeSetState(() {});
-                                          },
-                                        ),
+                                          safeSetState(() {});
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
-                              ].divide(const SizedBox(height: 8.0)),
+                                const Spacer(flex: 3),
+                              ],
                             ),
                           ),
                         ),
@@ -254,12 +256,10 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
               child: FFButtonWidget(
-                onPressed: !FFAppState().tracker
-                    ? null
-                    : () async {
-                        HapticFeedback.selectionClick();
-                        await launchURL('https://clck.ru/3Dfzwn');
-                      },
+                onPressed: () async {
+                  HapticFeedback.selectionClick();
+                  await launchURL('https://clck.ru/3Dfzwn');
+                },
                 text: 'Перейти в Турнир',
                 options: FFButtonOptions(
                   width: double.infinity,
@@ -267,21 +267,11 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                   padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                   iconPadding:
                       const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                  color: valueOrDefault<Color>(
-                    FFAppState().tracker
-                        ? FlutterFlowTheme.of(context).primary
-                        : FlutterFlowTheme.of(context).primaryBackground,
-                    FlutterFlowTheme.of(context).primaryBackground,
-                  ),
+                  color: FlutterFlowTheme.of(context).primary,
                   textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                         fontFamily:
                             FlutterFlowTheme.of(context).titleSmallFamily,
-                        color: valueOrDefault<Color>(
-                          FFAppState().tracker
-                              ? FlutterFlowTheme.of(context).info
-                              : FlutterFlowTheme.of(context).primaryText,
-                          FlutterFlowTheme.of(context).primaryText,
-                        ),
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.w600,
                         useGoogleFonts: GoogleFonts.asMap().containsKey(
@@ -290,12 +280,7 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                       ),
                   elevation: 0.0,
                   borderSide: BorderSide(
-                    color: valueOrDefault<Color>(
-                      FFAppState().tracker
-                          ? FlutterFlowTheme.of(context).primary
-                          : FlutterFlowTheme.of(context).borderColor,
-                      FlutterFlowTheme.of(context).borderColor,
-                    ),
+                    color: FlutterFlowTheme.of(context).primary,
                     width: 0.0,
                   ),
                   borderRadius: BorderRadius.circular(12.0),

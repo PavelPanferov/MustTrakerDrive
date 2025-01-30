@@ -232,11 +232,14 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 10.0, 0.0),
                               child: Text(
-                                '${formatNumber(
-                                  _model.totalDistance,
-                                  formatType: FormatType.custom,
-                                  format: '####.##',
-                                  locale: '',
+                                '${valueOrDefault<String>(
+                                  formatNumber(
+                                    _model.totalDistance,
+                                    formatType: FormatType.custom,
+                                    format: '####.##',
+                                    locale: '',
+                                  ),
+                                  '0',
                                 )} км',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -392,6 +395,35 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                     builder: (context) {
                                       final month =
                                           _model.monthDataType.toList();
+                                      if (month.isEmpty) {
+                                        return Center(
+                                          child: SizedBox(
+                                            height: valueOrDefault<double>(
+                                              () {
+                                                if (MediaQuery.sizeOf(context)
+                                                        .width <
+                                                    kBreakpointSmall) {
+                                                  return 300.0;
+                                                } else if (MediaQuery.sizeOf(
+                                                            context)
+                                                        .width <
+                                                    kBreakpointMedium) {
+                                                  return 400.0;
+                                                } else if (MediaQuery.sizeOf(
+                                                            context)
+                                                        .width <
+                                                    kBreakpointLarge) {
+                                                  return 500.0;
+                                                } else {
+                                                  return 350.0;
+                                                }
+                                              }(),
+                                              350.0,
+                                            ),
+                                            child: const EmptyWidget(),
+                                          ),
+                                        );
+                                      }
 
                                       return ListView.separated(
                                         padding: EdgeInsets.zero,
@@ -437,9 +469,13 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                           0.0,
                                                                           0.0),
                                                               child: Text(
-                                                                functions.monthAndYearConvert(
-                                                                    monthItem
-                                                                        .monthAndYear),
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  functions.monthAndYearConvert(
+                                                                      monthItem
+                                                                          .monthAndYear),
+                                                                  'Месяц',
+                                                                ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyLarge
@@ -471,18 +507,22 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                             child: Row(
                                                               mainAxisSize:
                                                                   MainAxisSize
-                                                                      .max,
+                                                                      .min,
                                                               children: [
                                                                 Text(
-                                                                  '${formatNumber(
-                                                                    monthItem
-                                                                        .distance,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .custom,
-                                                                    format:
-                                                                        '####.##',
-                                                                    locale: '',
+                                                                  '${valueOrDefault<String>(
+                                                                    formatNumber(
+                                                                      monthItem
+                                                                          .distance,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .custom,
+                                                                      format:
+                                                                          '####.##',
+                                                                      locale:
+                                                                          '',
+                                                                    ),
+                                                                    '0',
                                                                   )} км',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
@@ -515,15 +555,19 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                       ),
                                                                 ),
                                                                 Text(
-                                                                  '${formatNumber(
-                                                                    monthItem
-                                                                        .averageSpeed,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .custom,
-                                                                    format:
-                                                                        '####.##',
-                                                                    locale: '',
+                                                                  '${valueOrDefault<String>(
+                                                                    formatNumber(
+                                                                      monthItem
+                                                                          .averageSpeed,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .custom,
+                                                                      format:
+                                                                          '####.##',
+                                                                      locale:
+                                                                          '',
+                                                                    ),
+                                                                    '0',
                                                                   )} км/ч',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
@@ -1112,11 +1156,14 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                             ),
                                                                                                           ),
                                                                                                         Text(
-                                                                                                          '${formatNumber(
-                                                                                                            dailyListViewItem.averageSpeed,
-                                                                                                            formatType: FormatType.custom,
-                                                                                                            format: '####.##',
-                                                                                                            locale: '',
+                                                                                                          '${valueOrDefault<String>(
+                                                                                                            formatNumber(
+                                                                                                              dailyListViewItem.averageSpeed,
+                                                                                                              formatType: FormatType.custom,
+                                                                                                              format: '####.##',
+                                                                                                              locale: '',
+                                                                                                            ),
+                                                                                                            '0',
                                                                                                           )} км/ч',
                                                                                                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                 fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
@@ -1138,11 +1185,14 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                                   ),
                                                                                                             ),
                                                                                                             Text(
-                                                                                                              '${formatNumber(
-                                                                                                                dailyListViewItem.distance,
-                                                                                                                formatType: FormatType.custom,
-                                                                                                                format: '####.##',
-                                                                                                                locale: '',
+                                                                                                              '${valueOrDefault<String>(
+                                                                                                                formatNumber(
+                                                                                                                  dailyListViewItem.distance,
+                                                                                                                  formatType: FormatType.custom,
+                                                                                                                  format: '####.##',
+                                                                                                                  locale: '',
+                                                                                                                ),
+                                                                                                                '0',
                                                                                                               )} км',
                                                                                                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                     fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
@@ -1164,11 +1214,14 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                           children: [
                                                                                                             if (dailyListViewItem.rewardCorrection != 0)
                                                                                                               Text(
-                                                                                                                '+${formatNumber(
-                                                                                                                  dailyListViewItem.rewardCorrection,
-                                                                                                                  formatType: FormatType.custom,
-                                                                                                                  format: '####.##',
-                                                                                                                  locale: '',
+                                                                                                                '+${valueOrDefault<String>(
+                                                                                                                  formatNumber(
+                                                                                                                    dailyListViewItem.rewardCorrection,
+                                                                                                                    formatType: FormatType.custom,
+                                                                                                                    format: '####.##',
+                                                                                                                    locale: '',
+                                                                                                                  ),
+                                                                                                                  '0',
                                                                                                                 )} ',
                                                                                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                       fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
@@ -1194,11 +1247,14 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                               ),
                                                                                                             if (dailyListViewItem.rewardTotal > 0.0)
                                                                                                               Text(
-                                                                                                                ' +${formatNumber(
-                                                                                                                  dailyListViewItem.rewardTotal,
-                                                                                                                  formatType: FormatType.custom,
-                                                                                                                  format: '####.##',
-                                                                                                                  locale: '',
+                                                                                                                ' +${valueOrDefault<String>(
+                                                                                                                  formatNumber(
+                                                                                                                    dailyListViewItem.rewardTotal,
+                                                                                                                    formatType: FormatType.custom,
+                                                                                                                    format: '####.##',
+                                                                                                                    locale: '',
+                                                                                                                  ),
+                                                                                                                  '0',
                                                                                                                 )}',
                                                                                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                       fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
@@ -1248,10 +1304,13 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                               ),
                                                                                                         ),
                                                                                                       Text(
-                                                                                                        ' старт ${dateTimeFormat(
-                                                                                                          "Hm",
-                                                                                                          functions.stringToDateTime(dailyListViewItem.startDate),
-                                                                                                          locale: FFLocalizations.of(context).languageCode,
+                                                                                                        ' старт ${valueOrDefault<String>(
+                                                                                                          dateTimeFormat(
+                                                                                                            "Hm",
+                                                                                                            functions.stringToDateTime(dailyListViewItem.startDate),
+                                                                                                            locale: FFLocalizations.of(context).languageCode,
+                                                                                                          ),
+                                                                                                          '0',
                                                                                                         )}',
                                                                                                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                               fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
@@ -1270,10 +1329,13 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                                                                                             ),
                                                                                                       ),
                                                                                                       Text(
-                                                                                                        ' финиш ${dateTimeFormat(
-                                                                                                          "Hm",
-                                                                                                          functions.stringToDateTime(dailyListViewItem.endDate),
-                                                                                                          locale: FFLocalizations.of(context).languageCode,
+                                                                                                        ' финиш ${valueOrDefault<String>(
+                                                                                                          dateTimeFormat(
+                                                                                                            "Hm",
+                                                                                                            functions.stringToDateTime(dailyListViewItem.endDate),
+                                                                                                            locale: FFLocalizations.of(context).languageCode,
+                                                                                                          ),
+                                                                                                          '0',
                                                                                                         )}',
                                                                                                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                               fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
