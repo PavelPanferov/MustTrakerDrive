@@ -115,14 +115,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const RidesPageCopyWidget(),
         ),
         FFRoute(
-          name: 'techPage',
-          path: '/techPage',
-          builder: (context, params) => TechPageWidget(
-            phone: params.getParam(
-              'phone',
-              ParamType.String,
-            ),
-          ),
+          name: 'profileBlock',
+          path: '/profileBlock',
+          builder: (context, params) => const ProfileBlockWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

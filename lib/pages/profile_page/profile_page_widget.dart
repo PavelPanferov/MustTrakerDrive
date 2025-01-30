@@ -526,12 +526,10 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       child: FFButtonWidget(
-                        onPressed: !FFAppState().tracker
-                            ? null
-                            : () async {
-                                HapticFeedback.selectionClick();
-                                await launchURL('https://clck.ru/3Dfzwn');
-                              },
+                        onPressed: () async {
+                          HapticFeedback.selectionClick();
+                          await launchURL('https://clck.ru/3Dfzwn');
+                        },
                         text: 'Перейти в Турнир',
                         options: FFButtonOptions(
                           width: double.infinity,
@@ -540,25 +538,14 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                               16.0, 0.0, 16.0, 0.0),
                           iconPadding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: valueOrDefault<Color>(
-                            FFAppState().tracker
-                                ? FlutterFlowTheme.of(context).primary
-                                : FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                            FlutterFlowTheme.of(context).primaryBackground,
-                          ),
+                          color: FlutterFlowTheme.of(context).primary,
                           textStyle: FlutterFlowTheme.of(context)
                               .titleSmall
                               .override(
                                 fontFamily: FlutterFlowTheme.of(context)
                                     .titleSmallFamily,
-                                color: valueOrDefault<Color>(
-                                  FFAppState().tracker
-                                      ? FlutterFlowTheme.of(context).info
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                  FlutterFlowTheme.of(context).primaryText,
-                                ),
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
@@ -568,70 +555,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                               ),
                           elevation: 0.0,
                           borderSide: BorderSide(
-                            color: valueOrDefault<Color>(
-                              FFAppState().tracker
-                                  ? FlutterFlowTheme.of(context).primary
-                                  : FlutterFlowTheme.of(context).borderColor,
-                              FlutterFlowTheme.of(context).borderColor,
-                            ),
-                            width: 0.0,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                      child: FFButtonWidget(
-                        onPressed: !FFAppState().tracker
-                            ? null
-                            : () async {
-                                HapticFeedback.selectionClick();
-                                await launchURL('https://clck.ru/3Dfzwn');
-                              },
-                        text: 'Техническая кнопка',
-                        options: FFButtonOptions(
-                          width: double.infinity,
-                          height: 52.0,
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 16.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: valueOrDefault<Color>(
-                            FFAppState().tracker
-                                ? FlutterFlowTheme.of(context).primary
-                                : FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                            FlutterFlowTheme.of(context).primaryBackground,
-                          ),
-                          textStyle: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .override(
-                                fontFamily: FlutterFlowTheme.of(context)
-                                    .titleSmallFamily,
-                                color: valueOrDefault<Color>(
-                                  FFAppState().tracker
-                                      ? FlutterFlowTheme.of(context).info
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                  FlutterFlowTheme.of(context).primaryText,
-                                ),
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w600,
-                                useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                    FlutterFlowTheme.of(context)
-                                        .titleSmallFamily),
-                                lineHeight: 1.25,
-                              ),
-                          elevation: 0.0,
-                          borderSide: BorderSide(
-                            color: valueOrDefault<Color>(
-                              FFAppState().tracker
-                                  ? FlutterFlowTheme.of(context).primary
-                                  : FlutterFlowTheme.of(context).borderColor,
-                              FlutterFlowTheme.of(context).borderColor,
-                            ),
+                            color: FlutterFlowTheme.of(context).primary,
                             width: 0.0,
                           ),
                           borderRadius: BorderRadius.circular(12.0),
@@ -695,25 +619,13 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                               16.0, 0.0, 16.0, 0.0),
                           iconPadding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: valueOrDefault<Color>(
-                            FFAppState().tracker
-                                ? FlutterFlowTheme.of(context).primary
-                                : FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                            FlutterFlowTheme.of(context).primaryBackground,
-                          ),
+                          color: FlutterFlowTheme.of(context).primaryBackground,
                           textStyle: FlutterFlowTheme.of(context)
                               .titleSmall
                               .override(
                                 fontFamily: FlutterFlowTheme.of(context)
                                     .titleSmallFamily,
-                                color: valueOrDefault<Color>(
-                                  FFAppState().tracker
-                                      ? FlutterFlowTheme.of(context).info
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                  FlutterFlowTheme.of(context).primaryText,
-                                ),
+                                color: FlutterFlowTheme.of(context).primaryText,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
@@ -723,12 +635,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                               ),
                           elevation: 0.0,
                           borderSide: BorderSide(
-                            color: valueOrDefault<Color>(
-                              FFAppState().tracker
-                                  ? FlutterFlowTheme.of(context).primary
-                                  : FlutterFlowTheme.of(context).borderColor,
-                              FlutterFlowTheme.of(context).borderColor,
-                            ),
+                            color: FlutterFlowTheme.of(context).borderColor,
                             width: 0.0,
                           ),
                           borderRadius: BorderRadius.circular(12.0),
