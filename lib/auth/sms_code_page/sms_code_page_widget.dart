@@ -267,6 +267,7 @@ class _SmsCodePageWidgetState extends State<SmsCodePageWidget>
                                                           ?.jsonBody ??
                                                       ''),
                                                 )!;
+                                                FFAppState().OtpState = 0;
                                                 safeSetState(() {});
                                                 await Future.delayed(
                                                     const Duration(
@@ -337,6 +338,7 @@ class _SmsCodePageWidgetState extends State<SmsCodePageWidget>
                                                         ?.jsonBody ??
                                                     ''),
                                               )!;
+                                              FFAppState().OtpState = 0;
                                               FFAppState().update(() {});
                                               await Future.delayed(
                                                   const Duration(

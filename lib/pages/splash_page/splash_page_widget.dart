@@ -97,6 +97,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
                 )
                 ?.toString(),
           );
+          safeSetState(() {});
           if ((FFAppState().userDataAPI.firstName != '') &&
               (FFAppState().userDataAPI.firstName != 'null')) {
             _model.driverNumberApiResult =
@@ -107,24 +108,18 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
 
             await Future.delayed(const Duration(milliseconds: 350));
             if ((_model.driverNumberApiResult?.succeeded ?? true)) {
-              if (MUSTProDriveGroup.normalizedHumanDataCall.seriesAndNumber(
-                        (_model.driverNumberApiResult?.jsonBody ?? ''),
-                      ) !=
-                      null &&
-                  MUSTProDriveGroup.normalizedHumanDataCall.seriesAndNumber(
-                        (_model.driverNumberApiResult?.jsonBody ?? ''),
-                      ) !=
-                      '') {
-                FFAppState().updateUserDataAPIStruct(
-                  (e) => e
-                    ..legalEntityNumber = MUSTProDriveGroup
-                        .normalizedHumanDataCall
-                        .seriesAndNumber(
+              FFAppState().updateUserDataAPIStruct(
+                (e) => e
+                  ..legalEntityNumber = valueOrDefault<String>(
+                    MUSTProDriveGroup.normalizedHumanDataCall.seriesAndNumber(
                       (_model.driverNumberApiResult?.jsonBody ?? ''),
                     ),
-                );
-                FFAppState().update(() {});
-
+                    'null',
+                  ),
+              );
+              safeSetState(() {});
+              if ((FFAppState().userDataAPI.legalEntityNumber != '') &&
+                  (FFAppState().userDataAPI.legalEntityNumber != 'null')) {
                 context.goNamed(
                   'TrackerPage',
                   extra: <String, dynamic>{
