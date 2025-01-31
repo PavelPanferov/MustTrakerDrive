@@ -1,3 +1,4 @@
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -65,19 +66,48 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    AutoSizeText(
-                      '— Включи трекер, чтобы все твои поездки учитывались в Турнире',
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontSize: 16.0,
-                            letterSpacing: 0.0,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                            lineHeight: 1.25,
-                          ),
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        FFAppState().userDataAPI = UserInformationStruct();
+                        FFAppState().token = '';
+                        FFAppState().OtpState = 0;
+                        FFAppState().completeDriverDT =
+                            DriverCompleteDTStruct();
+                        FFAppState().startingStatusBool = false;
+                        if (FFAppState().tracker) {
+                          unawaited(
+                            () async {
+                              await actions.stopBackgroundService();
+                            }(),
+                          );
+                          HapticFeedback.lightImpact();
+
+                          context.goNamed('splashPage');
+                        } else {
+                          HapticFeedback.lightImpact();
+
+                          context.goNamed('splashPage');
+                        }
+                      },
+                      child: AutoSizeText(
+                        '— Включи трекер, чтобы все твои поездки учитывались в Турнире',
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              letterSpacing: 0.0,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                              lineHeight: 1.25,
+                            ),
+                      ),
                     ),
                     Expanded(
                       child: Padding(
@@ -118,7 +148,7 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
+                                      0.0, 8.0, 0.0, 8.0),
                                   child: AutoSizeText(
                                     'За каждую поездку с включенным трекером тебе и твоей команде будут начисляться золотые монеты КМТ.\n👇 Включи трекер',
                                     textAlign: TextAlign.center,
@@ -247,14 +277,14 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                       ),
                     ),
                   ]
-                      .divide(const SizedBox(height: 16.0))
+                      .divide(const SizedBox(height: 14.0))
                       .addToStart(const SizedBox(height: 12.0))
                       .addToEnd(const SizedBox(height: 16.0)),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 14.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   HapticFeedback.selectionClick();
@@ -281,7 +311,6 @@ class _TrackerPageWidgetState extends State<TrackerPageWidget> {
                   elevation: 0.0,
                   borderSide: BorderSide(
                     color: FlutterFlowTheme.of(context).primary,
-                    width: 0.0,
                   ),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
