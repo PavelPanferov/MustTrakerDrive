@@ -1,5 +1,4 @@
 import '/backend/api_requests/api_calls.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -42,60 +41,51 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
 
         await Future.delayed(const Duration(milliseconds: 350));
         if ((_model.profileGetCheck?.succeeded ?? true)) {
-          FFAppState().userDataAPI = UserInformationStruct(
-            firstName: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.firstName(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            lastName: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.lastName(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            patronymic: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.patronymic(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            email: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.email(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            bornOn: functions.stringToDateTime(valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.bornOn(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            )),
-            mainPhone: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.phonesmain(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            phoneFormatted: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.formattedPhone(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            avatarBlobId: valueOrDefault<String>(
-              MUSTProDriveGroup.profileGETCall.avatarBlobId(
-                (_model.profileGetCheck?.jsonBody ?? ''),
-              ),
-              'null',
-            ),
-            userID: MUSTProDriveGroup.profileGETCall
-                .userID(
+          FFAppState().updateUserDataAPIStruct(
+            (e) => e
+              ..firstName = valueOrDefault<String>(
+                MUSTProDriveGroup.profileGETCall.firstName(
                   (_model.profileGetCheck?.jsonBody ?? ''),
-                )
-                ?.toString(),
+                ),
+                'null',
+              )
+              ..lastName = valueOrDefault<String>(
+                MUSTProDriveGroup.profileGETCall.lastName(
+                  (_model.profileGetCheck?.jsonBody ?? ''),
+                ),
+                'null',
+              )
+              ..patronymic = valueOrDefault<String>(
+                MUSTProDriveGroup.profileGETCall.patronymic(
+                  (_model.profileGetCheck?.jsonBody ?? ''),
+                ),
+                'null',
+              )
+              ..bornOn = functions
+                  .stringToDateTime(MUSTProDriveGroup.profileGETCall.bornOn(
+                (_model.profileGetCheck?.jsonBody ?? ''),
+              ))
+              ..avatarBlobId = valueOrDefault<String>(
+                MUSTProDriveGroup.profileGETCall.avatarBlobId(
+                  (_model.profileGetCheck?.jsonBody ?? ''),
+                ),
+                'null',
+              )
+              ..userID = MUSTProDriveGroup.profileGETCall
+                  .userID(
+                    (_model.profileGetCheck?.jsonBody ?? ''),
+                  )
+                  ?.toString()
+              ..phoneFormatted =
+                  MUSTProDriveGroup.profileGETCall.formattedPhone(
+                (_model.profileGetCheck?.jsonBody ?? ''),
+              )
+              ..mainPhone = valueOrDefault<String>(
+                MUSTProDriveGroup.profileGETCall.phonesmain(
+                  (_model.profileGetCheck?.jsonBody ?? ''),
+                ),
+                'null',
+              ),
           );
           safeSetState(() {});
           if ((FFAppState().userDataAPI.firstName != '') &&
@@ -297,7 +287,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
                   child: Text(
-                    'v.1.0.12',
+                    'v.1.0.13',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily:
                               FlutterFlowTheme.of(context).bodyMediumFamily,
