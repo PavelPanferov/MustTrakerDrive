@@ -29,6 +29,7 @@ permission_handler_android=/Users/seytiproger/.pub-cache/hosted/pub.dev/permissi
 permission_handler_apple=/Users/seytiproger/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/
 permission_handler_html=/Users/seytiproger/.pub-cache/hosted/pub.dev/permission_handler_html-0.1.3+5/
 permission_handler_windows=/Users/seytiproger/.pub-cache/hosted/pub.dev/permission_handler_windows-0.2.1/
+sentry_flutter=/Users/seytiproger/.pub-cache/hosted/pub.dev/sentry_flutter-8.12.0/
 shared_preferences=/Users/seytiproger/.pub-cache/hosted/pub.dev/shared_preferences-2.3.2/
 shared_preferences_android=/Users/seytiproger/.pub-cache/hosted/pub.dev/shared_preferences_android-2.3.2/
 shared_preferences_foundation=/Users/seytiproger/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.2/

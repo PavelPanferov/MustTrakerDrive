@@ -12,6 +12,7 @@ import 'package:flutter_keyboard_visibility_web/flutter_keyboard_visibility_web.
 import 'package:geolocator_web/geolocator_web.dart';
 import 'package:package_info_plus/src/package_info_plus_web.dart';
 import 'package:permission_handler_html/permission_handler_html.dart';
+import 'package:sentry_flutter/sentry_flutter_web.dart';
 import 'package:shared_preferences_web/shared_preferences_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -24,6 +25,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   GeolocatorPlugin.registerWith(registrar);
   PackageInfoPlusWebPlugin.registerWith(registrar);
   WebPermissionHandler.registerWith(registrar);
+  SentryFlutterWeb.registerWith(registrar);
   SharedPreferencesPlugin.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);
   registrar.registerMessageHandler();

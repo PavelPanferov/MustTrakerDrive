@@ -1,3 +1,5 @@
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import '/custom_code/actions/index.dart' as actions;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +21,23 @@ void main() async {
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => appState,
-    child: const MyApp(),
-  ));
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://28a6ef292386f75f8673e6fceec3ba7c@o401139.ingest.us.sentry.io/4508755375357952';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+      options.autoSessionTrackingInterval = const Duration(milliseconds: 60000);
+      // The sampling rate for profiling is relative to tracesSampleRate
+      // Setting to 1.0 will profile 100% of sampled transactions:
+      options.profilesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(ChangeNotifierProvider(
+      create: (context) => appState,
+      child: const MyApp(),
+    )),
+  );
 }
 
 class MyApp extends StatefulWidget {

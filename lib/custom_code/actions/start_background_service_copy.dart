@@ -27,6 +27,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '/custom_code/actions/get_system_token.dart' as system_token;
 
+import 'package:sentry/sentry.dart';
+
 Future<dynamic> startBackgroundServiceCopy(
   String userToken,
   String userID,
@@ -327,16 +329,37 @@ Future<void> sendDataToServer(String userID) async {
             success = true;
             await DatabaseHelper.instance.deleteRows(idsToDelete);
             print('Удалены записи с id: $idsToDelete');
+
+            Sentry.captureMessage(
+              'Успешно отправлен пакет данных',
+              withScope: (scope) {
+                scope.setContexts('Количество пакетов', '${batch.length}');
+              },
+            );
           } else {
             print(
                 'Ошибка при отправке пакета данных: ${response.statusCode}, ${response.body}');
             retryCount++;
             await Future.delayed(Duration(seconds: 5));
+
+            Sentry.captureEvent(
+              'Ошибка при отправке пакета данных',
+              withScope: (scope) {
+                scope.setContexts('Количество пакетов', '${batch.length}');
+              },
+            );
           }
         } catch (e) {
           print('Ошибка при отправке пакета данных: $e');
           retryCount++;
           await Future.delayed(Duration(seconds: 5));
+
+          Sentry.captureEvent(
+            'Ошибка при отправке пакета данных',
+            withScope: (scope) {
+              scope.setContexts('Количество пакетов', '${batch.length}');
+            },
+          );
         }
       } while (!success && retryCount < maxRetries);
       if (!success) {
@@ -374,8 +397,22 @@ Future<void> sendDataToServer(String userID) async {
               print(
                   'Успешно отправлен отложенный пакет (${retryBatch.length} записей)');
             }
+
+            Sentry.captureEvent(
+              'Ошибка при отправке пакета данных',
+              withScope: (scope) {
+                scope.setContexts('Количество пакетов', '${batch.length}');
+              },
+            );
           } catch (e) {
             print('Ошибка при повторной отправке пакета: $e');
+
+            Sentry.captureEvent(
+              'Ошибка при отправке пакета данных',
+              withScope: (scope) {
+                scope.setContexts('Количество пакетов', '${batch.length}');
+              },
+            );
           }
         });
         continue;
@@ -387,12 +424,23 @@ Future<void> sendDataToServer(String userID) async {
     print(successfullySent == totalRecords
         ? 'Все данные успешно отправлены на сервер'
         : 'Отправлено $successfullySent из $totalRecords записей');
+
+    Sentry.captureEvent(
+      'Все данные успешно отправлены на сервер',
+    );
   } catch (e) {
     print('Общая ошибка в функции sendDataToServer: $e');
     await showNotification(
         'Ошибка отправки данных',
         'Не удалось отправить данные на сервер. Повторная попытка позже.',
         null);
+
+    Sentry.captureEvent(
+      'Ошибка при отправке пакета данных',
+      withScope: (scope) {
+        scope.setContexts('Количество пакетов', '${batch.length}');
+      },
+    );
   }
 }
 
