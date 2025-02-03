@@ -317,6 +317,8 @@ Future<void> sendDataToServer(String userID) async {
               continue; // Повторяем запрос с новым токеном
             } catch (e) {
               print('Не удалось обновить токен: $e');
+              Sentry.captureException(e, stackTrace: StackTrace.current);
+
               retryCount++;
               await Future.delayed(Duration(seconds: 5));
               continue;
@@ -329,13 +331,6 @@ Future<void> sendDataToServer(String userID) async {
             success = true;
             await DatabaseHelper.instance.deleteRows(idsToDelete);
             print('Удалены записи с id: $idsToDelete');
-
-            Sentry.captureMessage(
-              'Успешно отправлен пакет данных',
-              withScope: (scope) {
-                scope.setContexts('Количество пакетов', '${batch.length}');
-              },
-            );
           } else {
             print(
                 'Ошибка при отправке пакета данных: ${response.statusCode}, ${response.body}');
@@ -354,12 +349,7 @@ Future<void> sendDataToServer(String userID) async {
           retryCount++;
           await Future.delayed(Duration(seconds: 5));
 
-          Sentry.captureEvent(
-            'Ошибка при отправке пакета данных',
-            withScope: (scope) {
-              scope.setContexts('Количество пакетов', '${batch.length}');
-            },
-          );
+          Sentry.captureException(e, stackTrace: StackTrace.current);
         }
       } while (!success && retryCount < maxRetries);
       if (!success) {
@@ -396,10 +386,11 @@ Future<void> sendDataToServer(String userID) async {
               await DatabaseHelper.instance.deleteRows(retryIds);
               print(
                   'Успешно отправлен отложенный пакет (${retryBatch.length} записей)');
+              continue;
             }
 
             Sentry.captureEvent(
-              'Ошибка при отправке пакета данных',
+              'Ошибки нет, но статус не 200/201',
               withScope: (scope) {
                 scope.setContexts('Количество пакетов', '${batch.length}');
               },
@@ -407,12 +398,7 @@ Future<void> sendDataToServer(String userID) async {
           } catch (e) {
             print('Ошибка при повторной отправке пакета: $e');
 
-            Sentry.captureEvent(
-              'Ошибка при отправке пакета данных',
-              withScope: (scope) {
-                scope.setContexts('Количество пакетов', '${batch.length}');
-              },
-            );
+            Sentry.captureException(e, stackTrace: StackTrace.current);
           }
         });
         continue;
@@ -435,12 +421,7 @@ Future<void> sendDataToServer(String userID) async {
         'Не удалось отправить данные на сервер. Повторная попытка позже.',
         null);
 
-    Sentry.captureEvent(
-      'Ошибка при отправке пакета данных',
-      withScope: (scope) {
-        scope.setContexts('Количество пакетов', '${batch.length}');
-      },
-    );
+    Sentry.captureException(e, stackTrace: StackTrace.current);
   }
 }
 
