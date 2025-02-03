@@ -386,15 +386,14 @@ Future<void> sendDataToServer(String userID) async {
               await DatabaseHelper.instance.deleteRows(retryIds);
               print(
                   'Успешно отправлен отложенный пакет (${retryBatch.length} записей)');
-              continue;
+            } else {
+              Sentry.captureEvent(
+                'Ошибки нет, но статус не 200/201',
+                withScope: (scope) {
+                  scope.setContexts('Количество пакетов', '${batch.length}');
+                },
+              );
             }
-
-            Sentry.captureEvent(
-              'Ошибки нет, но статус не 200/201',
-              withScope: (scope) {
-                scope.setContexts('Количество пакетов', '${batch.length}');
-              },
-            );
           } catch (e) {
             print('Ошибка при повторной отправке пакета: $e');
 
