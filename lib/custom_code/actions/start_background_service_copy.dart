@@ -337,7 +337,7 @@ Future<void> sendDataToServer(String userID) async {
             retryCount++;
             await Future.delayed(Duration(seconds: 5));
 
-            Sentry.captureEvent(
+            Sentry.captureMessage(
               'Ошибка при отправке пакета данных',
               withScope: (scope) {
                 scope.setContexts('Количество пакетов', '${batch.length}');
@@ -387,7 +387,7 @@ Future<void> sendDataToServer(String userID) async {
               print(
                   'Успешно отправлен отложенный пакет (${retryBatch.length} записей)');
             } else {
-              Sentry.captureEvent(
+              Sentry.captureMessage(
                 'Ошибки нет, но статус не 200/201',
                 withScope: (scope) {
                   scope.setContexts('Количество пакетов', '${batch.length}');
@@ -410,7 +410,7 @@ Future<void> sendDataToServer(String userID) async {
         ? 'Все данные успешно отправлены на сервер'
         : 'Отправлено $successfullySent из $totalRecords записей');
 
-    Sentry.captureEvent(
+    Sentry.captureMessage(
       'Все данные успешно отправлены на сервер',
     );
   } catch (e) {
