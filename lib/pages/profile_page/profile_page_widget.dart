@@ -223,6 +223,11 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                   functions.createURLfromID(
                                       FFAppState().userDataAPI.avatarBlobId)!,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    'assets/images/error_image.webp',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ).animateOnPageLoad(animationsMap[
                                   'circleImageOnPageLoadAnimation']!),
