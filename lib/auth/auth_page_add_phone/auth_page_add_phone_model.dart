@@ -18,16 +18,16 @@ class AuthPageAddPhoneModel extends FlutterFlowModel<AuthPageAddPhoneWidget> {
 
   // Model for appbar component.
   late AppbarModel appbarModel;
-  // State field(s) for belPhone widget.
-  FocusNode? belPhoneFocusNode;
-  TextEditingController? belPhoneTextController;
-  final belPhoneMask = MaskTextInputFormatter(mask: '+375(##)###-##-##');
-  String? Function(BuildContext, String?)? belPhoneTextControllerValidator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController2;
-  final textFieldMask = MaskTextInputFormatter(mask: '+7(###)###-##-##');
-  String? Function(BuildContext, String?)? textController2Validator;
+  // State field(s) for TextFieldBEL widget.
+  FocusNode? textFieldBELFocusNode;
+  TextEditingController? textFieldBELTextController;
+  final textFieldBELMask = MaskTextInputFormatter(mask: '+(375)###-##-##');
+  String? Function(BuildContext, String?)? textFieldBELTextControllerValidator;
+  // State field(s) for TextFieldRUKZ widget.
+  FocusNode? textFieldRUKZFocusNode;
+  TextEditingController? textFieldRUKZTextController;
+  final textFieldRUKZMask = MaskTextInputFormatter(mask: '+7(###)###-##-##');
+  String? Function(BuildContext, String?)? textFieldRUKZTextControllerValidator;
   // Stores action output result for [Backend Call - API (AuthOTP)] action in nextButton widget.
   ApiCallResponse? code;
 
@@ -39,10 +39,10 @@ class AuthPageAddPhoneModel extends FlutterFlowModel<AuthPageAddPhoneWidget> {
   @override
   void dispose() {
     appbarModel.dispose();
-    belPhoneFocusNode?.dispose();
-    belPhoneTextController?.dispose();
+    textFieldBELFocusNode?.dispose();
+    textFieldBELTextController?.dispose();
 
-    textFieldFocusNode?.dispose();
-    textController2?.dispose();
+    textFieldRUKZFocusNode?.dispose();
+    textFieldRUKZTextController?.dispose();
   }
 }

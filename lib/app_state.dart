@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '/backend/schema/structs/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
-import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -19,19 +18,6 @@ class FFAppState extends ChangeNotifier {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
-    _safeInit(() {
-      _list = prefs.getStringList('ff_list')?.map(int.parse).toList() ?? _list;
-    });
-    _safeInit(() {
-      if (prefs.containsKey('ff_JSONLocationUser')) {
-        try {
-          _JSONLocationUser =
-              jsonDecode(prefs.getString('ff_JSONLocationUser') ?? '');
-        } catch (e) {
-          print("Can't decode persisted json. Error: $e.");
-        }
-      }
-    });
     _safeInit(() {
       _tracker = prefs.getBool('ff_tracker') ?? _tracker;
     });
@@ -72,48 +58,6 @@ class FFAppState extends ChangeNotifier {
   }
 
   late SharedPreferences prefs;
-
-  List<int> _list = [0, 1, 2, 3, 4, 5];
-  List<int> get list => _list;
-  set list(List<int> value) {
-    _list = value;
-    prefs.setStringList('ff_list', value.map((x) => x.toString()).toList());
-  }
-
-  void addToList(int value) {
-    list.add(value);
-    prefs.setStringList('ff_list', _list.map((x) => x.toString()).toList());
-  }
-
-  void removeFromList(int value) {
-    list.remove(value);
-    prefs.setStringList('ff_list', _list.map((x) => x.toString()).toList());
-  }
-
-  void removeAtIndexFromList(int index) {
-    list.removeAt(index);
-    prefs.setStringList('ff_list', _list.map((x) => x.toString()).toList());
-  }
-
-  void updateListAtIndex(
-    int index,
-    int Function(int) updateFn,
-  ) {
-    list[index] = updateFn(_list[index]);
-    prefs.setStringList('ff_list', _list.map((x) => x.toString()).toList());
-  }
-
-  void insertAtIndexInList(int index, int value) {
-    list.insert(index, value);
-    prefs.setStringList('ff_list', _list.map((x) => x.toString()).toList());
-  }
-
-  dynamic _JSONLocationUser;
-  dynamic get JSONLocationUser => _JSONLocationUser;
-  set JSONLocationUser(dynamic value) {
-    _JSONLocationUser = value;
-    prefs.setString('ff_JSONLocationUser', jsonEncode(value));
-  }
 
   int _OtpState = 0;
   int get OtpState => _OtpState;
