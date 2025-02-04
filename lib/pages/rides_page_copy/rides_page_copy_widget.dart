@@ -1467,7 +1467,7 @@ class _RidesPageCopyWidgetState extends State<RidesPageCopyWidget>
                                       'buttonOnPageLoadAnimation']!),
                                 ),
                               ),
-                            ].addToEnd(const SizedBox(height: 180.0)),
+                            ].addToEnd(const SizedBox(height: 205.0)),
                           ),
                         ),
                       ),

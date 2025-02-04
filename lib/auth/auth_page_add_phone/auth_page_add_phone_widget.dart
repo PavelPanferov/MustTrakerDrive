@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/pages/components/appbar/appbar_widget.dart';
 import 'dart:async';
 import '/flutter_flow/custom_functions.dart' as functions;
+import '/flutter_flow/random_data_util.dart' as random_data;
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/gestures.dart';
@@ -52,25 +53,12 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
       });
     }
 
-    _model.belPhoneTextController ??= TextEditingController();
-    _model.belPhoneFocusNode ??= FocusNode();
-    _model.belPhoneFocusNode!.addListener(
-      () async {
-        if (_model.belPhoneTextController.text == '') {
-          safeSetState(() {
-            _model.belPhoneTextController?.text = '+375';
-            _model.belPhoneMask.updateMask(
-              newValue: TextEditingValue(
-                text: _model.belPhoneTextController!.text,
-              ),
-            );
-          });
-        }
-      },
-    );
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
-    _model.textFieldFocusNode!.addListener(() => safeSetState(() {}));
+    _model.textFieldBELTextController ??= TextEditingController();
+    _model.textFieldBELFocusNode ??= FocusNode();
+    _model.textFieldBELFocusNode!.addListener(() => safeSetState(() {}));
+    _model.textFieldRUKZTextController ??= TextEditingController();
+    _model.textFieldRUKZFocusNode ??= FocusNode();
+    _model.textFieldRUKZFocusNode!.addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'containerOnActionTriggerAnimation1': AnimationInfo(
         trigger: AnimationTrigger.onActionTrigger,
@@ -153,30 +141,36 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Text(
-                        '— Введи телефон, чтобы войти в свой личный кабинет ProDrive',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                              lineHeight: 1.25,
-                            ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          '— Введи телефон, чтобы войти в свой личный кабинет ProDrive',
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyMediumFamily,
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyMediumFamily),
+                                lineHeight: 1.25,
+                              ),
+                        ),
                       ),
                       Align(
                         alignment: const AlignmentDirectional(-1.0, 0.0),
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 20.0, 0.0, 0.0),
+                              16.0, 20.0, 0.0, 0.0),
                           child: SizedBox(
                             height: 60.0,
                             child: Stack(
@@ -193,13 +187,13 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                           SizedBox(
                                             width: double.infinity,
                                             child: TextFormField(
-                                              controller:
-                                                  _model.belPhoneTextController,
+                                              controller: _model
+                                                  .textFieldBELTextController,
                                               focusNode:
-                                                  _model.belPhoneFocusNode,
+                                                  _model.textFieldBELFocusNode,
                                               onChanged: (_) =>
                                                   EasyDebounce.debounce(
-                                                '_model.belPhoneTextController',
+                                                '_model.textFieldBELTextController',
                                                 const Duration(milliseconds: 0),
                                                 () async {
                                                   _model.error = false;
@@ -209,7 +203,25 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                               autofocus: false,
                                               obscureText: false,
                                               decoration: InputDecoration(
-                                                isDense: false,
+                                                isDense: true,
+                                                labelStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily,
+                                                          fontSize: 16.0,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelMediumFamily),
+                                                          lineHeight: 1.4,
+                                                        ),
                                                 hintText: '+375(12)345-67-67',
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -223,7 +235,7 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                                                   .of(context)
                                                               .tertiaryText,
                                                           fontSize: 16.0,
-                                                          letterSpacing: 1.0,
+                                                          letterSpacing: 0.0,
                                                           useGoogleFonts: GoogleFonts
                                                                   .asMap()
                                                               .containsKey(
@@ -235,13 +247,19 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                                 enabledBorder:
                                                     OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    color: _model.error
-                                                        ? FlutterFlowTheme.of(
-                                                                context)
-                                                            .error
-                                                        : FlutterFlowTheme.of(
-                                                                context)
-                                                            .borderColor,
+                                                    color:
+                                                        valueOrDefault<Color>(
+                                                      _model.error
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .borderColor,
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .borderColor,
+                                                    ),
                                                     width: 1.0,
                                                   ),
                                                   borderRadius:
@@ -315,10 +333,10 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
                                               validator: _model
-                                                  .belPhoneTextControllerValidator
+                                                  .textFieldBELTextControllerValidator
                                                   .asValidator(context),
                                               inputFormatters: [
-                                                _model.belPhoneMask
+                                                _model.textFieldBELMask
                                               ],
                                             ),
                                           ),
@@ -333,13 +351,13 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                           SizedBox(
                                             width: double.infinity,
                                             child: TextFormField(
-                                              controller:
-                                                  _model.textController2,
+                                              controller: _model
+                                                  .textFieldRUKZTextController,
                                               focusNode:
-                                                  _model.textFieldFocusNode,
+                                                  _model.textFieldRUKZFocusNode,
                                               onChanged: (_) =>
                                                   EasyDebounce.debounce(
-                                                '_model.textController2',
+                                                '_model.textFieldRUKZTextController',
                                                 const Duration(milliseconds: 0),
                                                 () async {
                                                   _model.error = false;
@@ -347,18 +365,19 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                                 },
                                               ),
                                               onFieldSubmitted: (_) async {
-                                                if (_model.textController2
+                                                if (_model.textFieldRUKZTextController
                                                             .text ==
                                                         '') {
                                                   safeSetState(() {
-                                                    _model.textController2
+                                                    _model
+                                                        .textFieldRUKZTextController
                                                         ?.text = '+7';
-                                                    _model.textFieldMask
+                                                    _model.textFieldRUKZMask
                                                         .updateMask(
                                                       newValue:
                                                           TextEditingValue(
                                                         text: _model
-                                                            .textController2!
+                                                            .textFieldRUKZTextController!
                                                             .text,
                                                       ),
                                                     );
@@ -474,10 +493,10 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
                                               validator: _model
-                                                  .textController2Validator
+                                                  .textFieldRUKZTextControllerValidator
                                                   .asValidator(context),
                                               inputFormatters: [
-                                                _model.textFieldMask
+                                                _model.textFieldRUKZMask
                                               ],
                                             ),
                                           ),
@@ -640,34 +659,44 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                 }
                               },
                               child: Container(
-                                width: 20.0,
-                                height: 20.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  border: Border.all(
-                                    color: valueOrDefault<Color>(
-                                      !_model.privacy && _model.error
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
+                                decoration: const BoxDecoration(),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 12.0, 12.0, 12.0),
+                                  child: Container(
+                                    width: 20.0,
+                                    height: 20.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      border: Border.all(
+                                        color: valueOrDefault<Color>(
+                                          !_model.privacy && _model.error
+                                              ? FlutterFlowTheme.of(context)
+                                                  .error
+                                              : FlutterFlowTheme.of(context)
+                                                  .borderColor,
+                                          FlutterFlowTheme.of(context)
                                               .borderColor,
-                                      FlutterFlowTheme.of(context).borderColor,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                child: Visibility(
-                                  visible: _model.privacy,
-                                  child: Icon(
-                                    Icons.check_rounded,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 14.0,
+                                    child: Visibility(
+                                      visible: _model.privacy,
+                                      child: Icon(
+                                        Icons.check_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 14.0,
+                                      ),
+                                    ),
+                                  ).animateOnActionTrigger(
+                                    animationsMap[
+                                        'containerOnActionTriggerAnimation1']!,
                                   ),
                                 ),
                               ),
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation1']!,
                             ),
                             Expanded(
                               child: RichText(
@@ -732,7 +761,7 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                 ),
                               ),
                             ),
-                          ].divide(const SizedBox(width: 12.0)),
+                          ],
                         ),
                       ),
                       Row(
@@ -752,34 +781,43 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                               }
                             },
                             child: Container(
-                              width: 20.0,
-                              height: 20.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(4.0),
-                                border: Border.all(
-                                  color: valueOrDefault<Color>(
-                                    !_model.terms && _model.error
-                                        ? FlutterFlowTheme.of(context).error
-                                        : FlutterFlowTheme.of(context)
+                              decoration: const BoxDecoration(),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 12.0, 12.0, 12.0),
+                                child: Container(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    border: Border.all(
+                                      color: valueOrDefault<Color>(
+                                        !_model.terms && _model.error
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .borderColor,
+                                        FlutterFlowTheme.of(context)
                                             .borderColor,
-                                    FlutterFlowTheme.of(context).borderColor,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              child: Visibility(
-                                visible: _model.terms,
-                                child: Icon(
-                                  Icons.check_rounded,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
+                                  child: Visibility(
+                                    visible: _model.terms,
+                                    child: Icon(
+                                      Icons.check_rounded,
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      size: 14.0,
+                                    ),
+                                  ),
+                                ).animateOnActionTrigger(
+                                  animationsMap[
+                                      'containerOnActionTriggerAnimation2']!,
                                 ),
                               ),
                             ),
-                          ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation2']!,
                           ),
                           Expanded(
                             child: RichText(
@@ -843,7 +881,7 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                               ),
                             ),
                           ),
-                        ].divide(const SizedBox(width: 12.0)),
+                        ],
                       ),
                     ]
                         .divide(const SizedBox(height: 12.0))
@@ -859,22 +897,27 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 48.0),
                 child: FFButtonWidget(
                   onPressed: (FFAppState().country == 'bel'
-                          ? ((_model.belPhoneTextController.text.length) < 17)
-                          : ((_model.textController2.text.length) < 16))
+                          ? (random_data.randomInteger(17, 17) <
+                              (valueOrDefault<String>(
+                                _model.textFieldBELTextController.text,
+                                '0',
+                              ).length))
+                          : ((_model.textFieldRUKZTextController.text.length) <
+                              16))
                       ? null
                       : () async {
                           var shouldSetState = false;
                           HapticFeedback.lightImpact();
                           if (functions.phoneValidation(
                               FFAppState().country == 'bel'
-                                  ? _model.belPhoneTextController.text
-                                  : _model.textController2.text)) {
+                                  ? _model.textFieldBELTextController.text
+                                  : _model.textFieldRUKZTextController.text)) {
                             if (_model.privacy && _model.terms) {
                               _model.code =
                                   await MUSTProDriveGroup.authOTPCall.call(
                                 phoneNumber: FFAppState().country == 'bel'
-                                    ? _model.belPhoneTextController.text
-                                    : _model.textController2.text,
+                                    ? _model.textFieldBELTextController.text
+                                    : _model.textFieldRUKZTextController.text,
                               );
 
                               shouldSetState = true;
@@ -895,8 +938,10 @@ class _AuthPageAddPhoneWidgetState extends State<AuthPageAddPhoneWidget>
                                   queryParameters: {
                                     'phone': serializeParam(
                                       FFAppState().country == 'bel'
-                                          ? _model.belPhoneTextController.text
-                                          : _model.textController2.text,
+                                          ? _model
+                                              .textFieldBELTextController.text
+                                          : _model
+                                              .textFieldRUKZTextController.text,
                                       ParamType.String,
                                     ),
                                   }.withoutNulls,

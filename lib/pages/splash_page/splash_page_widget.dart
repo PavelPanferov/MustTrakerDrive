@@ -287,7 +287,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
                   child: Text(
-                    'v.1.0.13',
+                    'v.1.0.14',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily:
                               FlutterFlowTheme.of(context).bodyMediumFamily,
