@@ -1,3 +1,5 @@
+import 'package:package_info_plus/package_info_plus.dart';
+
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -27,10 +29,20 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
 
   final animationsMap = <String, AnimationInfo>{};
 
+  String packageVersion = '';
+
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => SplashPageModel());
+
+    PackageInfo.fromPlatform().then((info) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        setState(() {
+          packageVersion = info.version;
+        });
+      });
+    });
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -285,9 +297,10 @@ class _SplashPageWidgetState extends State<SplashPageWidget>
               Align(
                 alignment: const AlignmentDirectional(0.0, 1.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
                   child: Text(
-                    'v.1.0.14',
+                    'v$packageVersion',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily:
                               FlutterFlowTheme.of(context).bodyMediumFamily,
