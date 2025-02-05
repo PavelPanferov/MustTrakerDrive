@@ -1,4 +1,8 @@
 // Automatic FlutterFlow imports
+import 'dart:developer';
+
+import 'package:tracker_pro_drive/custom_code/models/location_model.dart';
+
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -28,6 +32,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '/custom_code/actions/get_system_token.dart' as system_token;
 
 import 'package:sentry/sentry.dart';
+import '../helpers/external_db_helper.dart';
 
 Future<dynamic> startBackgroundServiceCopy(
   String userToken,
@@ -122,11 +127,6 @@ Future<void> onStart(ServiceInstance service) async {
     }
   });
 
-  // Настройки для получения локации
-  final locationSettings = geolocator.LocationSettings(
-    accuracy: geolocator.LocationAccuracy.high,
-  );
-
   // Таймер для отправки данных на сервер - каждые 30 минут
   dataSendTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
     try {
@@ -156,6 +156,8 @@ Future<bool> onIosBackground(ServiceInstance service) async {
 
 Future<void> recordLocation() async {
   try {
+    ExtDB.readDataFromFile();
+
     // Проверяем разрешения на геолокацию
     geolocator.LocationPermission permission =
         await geolocator.Geolocator.checkPermission();
@@ -218,6 +220,11 @@ Future<void> recordLocation() async {
 
     // Сохраняем данные в локальную базу данных SQLite
     int id = await DatabaseHelper.instance.insert(locationData);
+
+    await ExtDB.saveDataToFile(
+      data: jsonEncode(locationData),
+    );
+
     print('Местоположение сохранено в БД с id $id: $locationData');
   } catch (e) {
     print('Ошибка в функции recordLocation: $e');
@@ -242,7 +249,7 @@ Future<void> sendDataToServer(String userID) async {
 
     // Проверяем наличие интернет-соединения
     var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.first == ConnectivityResult.none) {
       print('Нет подключения к интернету. Данные будут отправлены позже.');
       return;
     }
@@ -278,6 +285,10 @@ Future<void> sendDataToServer(String userID) async {
 
       var coordinates = batch.map((e) {
         var dt = DateTime.parse(e['timestamp']).toUtc();
+
+        log('timestamp before toISO - ${dt}');
+        log('timestamp after toISO- ${dt.toIso8601String()}');
+
         return {
           "latitude": e['latitude'],
           "longitude": e['longitude'],
@@ -330,6 +341,7 @@ Future<void> sendDataToServer(String userID) async {
             print('Успешно отправлен пакет данных (${batch.length} записей)');
             success = true;
             await DatabaseHelper.instance.deleteRows(idsToDelete);
+
             print('Удалены записи с id: $idsToDelete');
           } else {
             print(

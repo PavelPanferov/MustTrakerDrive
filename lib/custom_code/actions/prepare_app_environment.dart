@@ -1,4 +1,6 @@
 // Automatic FlutterFlow imports
+import 'package:tracker_pro_drive/custom_code/helpers/external_db_helper.dart';
+
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:tracker_pro_drive/custom_code/widgets/backup_modal_widget.dart';
+
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -14,6 +18,8 @@ class AppbarWidget extends StatefulWidget {
 
 class _AppbarWidgetState extends State<AppbarWidget> {
   late AppbarModel _model;
+
+  Timer? logoTapTimer;
 
   @override
   void setState(VoidCallback callback) {
@@ -49,7 +55,8 @@ class _AppbarWidgetState extends State<AppbarWidget> {
             child: Align(
               alignment: const AlignmentDirectional(-1.0, 0.0),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 48.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 48.0, 0.0, 0.0),
                 child: FlutterFlowIconButton(
                   borderRadius: 100.0,
                   buttonSize: 54.0,
@@ -68,16 +75,28 @@ class _AppbarWidgetState extends State<AppbarWidget> {
           ),
           Align(
             alignment: const AlignmentDirectional(0.0, 1.0),
-            child: Container(
-              width: 96.0,
-              height: 96.0,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                'assets/images/avatar_64.webp',
-                fit: BoxFit.cover,
+            child: GestureDetector(
+              onTapDown: (details) {
+                logoTapTimer = Timer(
+                  const Duration(seconds: 10),
+                  () async {
+                    await BackupModalWidget.showModalSheet(context);
+                  },
+                );
+              },
+              onTapCancel: () => logoTapTimer?.cancel(),
+              onTapUp: (details) => logoTapTimer?.cancel(),
+              child: Container(
+                width: 96.0,
+                height: 96.0,
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Image.asset(
+                  'assets/images/avatar_64.webp',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
