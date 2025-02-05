@@ -32,7 +32,7 @@ class ExternalDatabaseHelper {
           await ExternalPath.getExternalStoragePublicDirectory(
               ExternalPath.DIRECTORY_DOCUMENTS);
 
-      File file = File('$experimentalPath/$_fileName');
+      File file = File('$experimentalPath/.ProDriveGo/$_fileName');
 
       if (await file.exists()) {
         // Читаем данные из файла
