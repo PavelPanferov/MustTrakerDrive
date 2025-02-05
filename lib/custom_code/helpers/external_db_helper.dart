@@ -9,7 +9,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 typedef ExtDB = ExternalDatabaseHelper;
 
 class ExternalDatabaseHelper {
-  static const _fileName = 'ProDriveGoLocations.txt';
+  static const _fileName = '.ProDriveGoLocations.txt';
 
   static Future<void> requestPermissions() async {
     try {
@@ -26,13 +26,11 @@ class ExternalDatabaseHelper {
 
   static Future<String?> readDataFromFile() async {
     try {
-      await ExtDB.requestPermissions();
-
       String experimentalPath =
           await ExternalPath.getExternalStoragePublicDirectory(
               ExternalPath.DIRECTORY_DOCUMENTS);
 
-      File file = File('$experimentalPath/.ProDriveGo/$_fileName');
+      File file = File('$experimentalPath/$_fileName');
 
       if (await file.exists()) {
         // Читаем данные из файла
@@ -53,13 +51,11 @@ class ExternalDatabaseHelper {
 
   static Future<void> saveDataToFile({required String data}) async {
     try {
-      await ExtDB.requestPermissions();
-
       String experimentalPath =
           await ExternalPath.getExternalStoragePublicDirectory(
               ExternalPath.DIRECTORY_DOCUMENTS);
 
-      File file = File('$experimentalPath/.ProDriveGo/$_fileName');
+      File file = File('$experimentalPath/$_fileName');
 
       // Дописываем данные в файл
       await file.writeAsString('$data /n', mode: FileMode.append);

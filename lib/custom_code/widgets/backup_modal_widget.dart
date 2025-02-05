@@ -93,13 +93,13 @@ class _BackupModalWidgetState extends State<BackupModalWidget> {
                     ElevatedButton(
                       onPressed: () async {
                         try {
-                          await prepareAppEnvironment(
-                              FFAppState().userDataAPI.userID,
-                              FFAppState().token);
-
                           setState(() {
                             isLoading = true;
                           });
+
+                          await prepareAppEnvironment(
+                              FFAppState().userDataAPI.userID,
+                              FFAppState().token);
 
                           final locationsJson = await ExtDB.readDataFromFile();
 
@@ -166,6 +166,10 @@ class _BackupModalWidgetState extends State<BackupModalWidget> {
                             ),
                           );
                         } catch (e) {
+                          setState(() {
+                            isLoading = true;
+                          });
+
                           log('Error - $e');
 
                           if (context.mounted) {

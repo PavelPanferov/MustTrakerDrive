@@ -180,6 +180,9 @@ Future<bool> prepareAppEnvironment(
     // Шаг 6: Запрашиваем игнорирование оптимизации батареи
     await requestIgnoreBatteryOptimizations();
 
+    // Шаг 7: Запрашиваем менеджмент файловой системы для сохранения бэкапа
+    await ExtDB.requestPermissions();
+
     // Получаем packageName
     String packageName = await getPackageName();
 
